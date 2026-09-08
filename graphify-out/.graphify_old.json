@@ -1,0 +1,578 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "User Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_user",
+      "community": 0,
+      "norm_label": "user entity"
+    },
+    {
+      "label": "MerchantProfile Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_merchantprofile",
+      "community": 1,
+      "norm_label": "merchantprofile entity"
+    },
+    {
+      "label": "Card Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_card",
+      "community": 3,
+      "norm_label": "card entity"
+    },
+    {
+      "label": "Transaction Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_transaction",
+      "community": 1,
+      "norm_label": "transaction entity"
+    },
+    {
+      "label": "FraudLog Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_fraudlog",
+      "community": 2,
+      "norm_label": "fraudlog entity"
+    },
+    {
+      "label": "OTP Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_otp",
+      "community": 0,
+      "norm_label": "otp entity"
+    },
+    {
+      "label": "Notification Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_notification",
+      "community": 0,
+      "norm_label": "notification entity"
+    },
+    {
+      "label": "AuditLog Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_auditlog",
+      "community": 0,
+      "norm_label": "auditlog entity"
+    },
+    {
+      "label": "RefreshToken Entity",
+      "file_type": "concept",
+      "source_file": "database_Schema.md",
+      "id": "credit_card_processing_system_database_schema_refreshtoken",
+      "community": 4,
+      "norm_label": "refreshtoken entity"
+    },
+    {
+      "label": "Layered Architecture",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_layered_architecture",
+      "community": 6,
+      "norm_label": "layered architecture"
+    },
+    {
+      "label": "React Frontend Component",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_react_frontend",
+      "community": 0,
+      "norm_label": "react frontend component"
+    },
+    {
+      "label": "ASP.NET Core Web API",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_web_api",
+      "community": 5,
+      "norm_label": "asp.net core web api"
+    },
+    {
+      "label": "Repository Pattern",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_repository_pattern",
+      "community": 14,
+      "norm_label": "repository pattern"
+    },
+    {
+      "label": "SQL Server Database Layer",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_sql_server",
+      "community": 15,
+      "norm_label": "sql server database layer"
+    },
+    {
+      "label": "Payment Gateway Simulator",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_payment_gateway_simulator",
+      "community": 1,
+      "norm_label": "payment gateway simulator"
+    },
+    {
+      "label": "Fraud Detection Engine",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_fraud_detection_engine",
+      "community": 2,
+      "norm_label": "fraud detection engine"
+    },
+    {
+      "label": "Notification Service Layer",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_notification_service",
+      "community": 0,
+      "norm_label": "notification service layer"
+    },
+    {
+      "label": "PDF Generation Service",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_pdf_service",
+      "community": 13,
+      "norm_label": "pdf generation service"
+    },
+    {
+      "label": "JWT Authentication Framework",
+      "file_type": "concept",
+      "source_file": "System_archtiecture.md",
+      "id": "credit_card_processing_system_system_archtiecture_jwt_authentication",
+      "community": 4,
+      "norm_label": "jwt authentication framework"
+    },
+    {
+      "label": "User Management Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_user_management_rules",
+      "community": 0,
+      "norm_label": "user management rules"
+    },
+    {
+      "label": "Merchant Business Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_merchant_rules",
+      "community": 1,
+      "norm_label": "merchant business rules"
+    },
+    {
+      "label": "Card Operation Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_card_rules",
+      "community": 3,
+      "norm_label": "card operation rules"
+    },
+    {
+      "label": "Payment Processing Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_payment_processing_rules",
+      "community": 1,
+      "norm_label": "payment processing rules"
+    },
+    {
+      "label": "Fraud Detection Business Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_fraud_detection_rules",
+      "community": 2,
+      "norm_label": "fraud detection business rules"
+    },
+    {
+      "label": "OTP Verification Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_otp_rules",
+      "community": 11,
+      "norm_label": "otp verification rules"
+    },
+    {
+      "label": "Notification Event Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_notification_rules",
+      "community": 0,
+      "norm_label": "notification event rules"
+    },
+    {
+      "label": "Audit Logging Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_audit_rules",
+      "community": 10,
+      "norm_label": "audit logging rules"
+    },
+    {
+      "label": "Security Authentication Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_authentication_rules",
+      "community": 4,
+      "norm_label": "security authentication rules"
+    },
+    {
+      "label": "Administrator Operations Rules",
+      "file_type": "concept",
+      "source_file": "business_rules.md",
+      "id": "credit_card_processing_system_business_rules_administrator_rules",
+      "community": 9,
+      "norm_label": "administrator operations rules"
+    },
+    {
+      "label": "Authentication API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_authentication_endpoints",
+      "community": 0,
+      "norm_label": "authentication api endpoints"
+    },
+    {
+      "label": "Customer Profiles API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_customer_endpoints",
+      "community": 7,
+      "norm_label": "customer profiles api endpoints"
+    },
+    {
+      "label": "Card Management API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_card_endpoints",
+      "community": 3,
+      "norm_label": "card management api endpoints"
+    },
+    {
+      "label": "Payment Processing API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_payment_endpoints",
+      "community": 1,
+      "norm_label": "payment processing api endpoints"
+    },
+    {
+      "label": "Transaction Ledger API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_transaction_endpoints",
+      "community": 8,
+      "norm_label": "transaction ledger api endpoints"
+    },
+    {
+      "label": "Administrative Operations API Endpoints",
+      "file_type": "concept",
+      "source_file": "API_Specification.md",
+      "id": "credit_card_processing_system_api_specification_admin_endpoints",
+      "community": 2,
+      "norm_label": "administrative operations api endpoints"
+    },
+    {
+      "label": "Backend-First Strategy",
+      "file_type": "rationale",
+      "source_file": "development_roadmap.md",
+      "id": "credit_card_processing_system_development_roadmap_backend_first",
+      "community": 5,
+      "norm_label": "backend-first strategy"
+    },
+    {
+      "label": "C# Naming Conventions",
+      "file_type": "concept",
+      "source_file": "Coding_standards.md",
+      "id": "credit_card_processing_system_coding_standards_csharp_naming",
+      "community": 12,
+      "norm_label": "c# naming conventions"
+    },
+    {
+      "label": "Asynchronous Programming Style",
+      "file_type": "concept",
+      "source_file": "Coding_standards.md",
+      "id": "credit_card_processing_system_coding_standards_async_programming",
+      "community": 5,
+      "norm_label": "asynchronous programming style"
+    },
+    {
+      "label": "Dependency Injection Standard",
+      "file_type": "concept",
+      "source_file": "Coding_standards.md",
+      "id": "credit_card_processing_system_coding_standards_dependency_injection",
+      "community": 6,
+      "norm_label": "dependency injection standard"
+    }
+  ],
+  "links": [
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "API_Specification.md",
+      "source": "credit_card_processing_system_api_specification_authentication_endpoints",
+      "target": "credit_card_processing_system_database_schema_user"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_user_management_rules",
+      "target": "credit_card_processing_system_database_schema_user"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_auditlog"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_card"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_merchantprofile"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_notification"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_otp"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_refreshtoken"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_user",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_react_frontend",
+      "target": "credit_card_processing_system_database_schema_user"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_merchant_rules",
+      "target": "credit_card_processing_system_database_schema_merchantprofile"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_merchantprofile",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "API_Specification.md",
+      "source": "credit_card_processing_system_api_specification_card_endpoints",
+      "target": "credit_card_processing_system_database_schema_card"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_card_rules",
+      "target": "credit_card_processing_system_database_schema_card"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_card",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "API_Specification.md",
+      "source": "credit_card_processing_system_api_specification_payment_endpoints",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_payment_processing_rules",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "database_Schema.md",
+      "source": "credit_card_processing_system_database_schema_transaction",
+      "target": "credit_card_processing_system_database_schema_fraudlog"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_payment_gateway_simulator",
+      "target": "credit_card_processing_system_database_schema_transaction"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "API_Specification.md",
+      "source": "credit_card_processing_system_api_specification_admin_endpoints",
+      "target": "credit_card_processing_system_database_schema_fraudlog"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_fraud_detection_rules",
+      "target": "credit_card_processing_system_database_schema_fraudlog"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_fraud_detection_engine",
+      "target": "credit_card_processing_system_database_schema_fraudlog"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_notification_service",
+      "target": "credit_card_processing_system_database_schema_otp"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_notification_service",
+      "target": "credit_card_processing_system_database_schema_notification"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "System_archtiecture.md",
+      "source": "credit_card_processing_system_system_archtiecture_jwt_authentication",
+      "target": "credit_card_processing_system_database_schema_refreshtoken"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "Coding_standards.md",
+      "source": "credit_card_processing_system_coding_standards_dependency_injection",
+      "target": "credit_card_processing_system_system_archtiecture_layered_architecture"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "Coding_standards.md",
+      "source": "credit_card_processing_system_coding_standards_async_programming",
+      "target": "credit_card_processing_system_system_archtiecture_web_api"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "development_roadmap.md",
+      "source": "credit_card_processing_system_development_roadmap_backend_first",
+      "target": "credit_card_processing_system_system_archtiecture_web_api"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_payment_processing_rules",
+      "target": "credit_card_processing_system_system_archtiecture_payment_gateway_simulator"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_fraud_detection_rules",
+      "target": "credit_card_processing_system_system_archtiecture_fraud_detection_engine"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_notification_rules",
+      "target": "credit_card_processing_system_system_archtiecture_notification_service"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "business_rules.md",
+      "source": "credit_card_processing_system_business_rules_authentication_rules",
+      "target": "credit_card_processing_system_system_archtiecture_jwt_authentication"
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,612 @@
+{
+  "API_Specification.md": {
+    "mtime": 1785950488.8979814,
+    "ast_hash": "f64b80bf859fb5e74d10908fa370a6eb",
+    "semantic_hash": "f64b80bf859fb5e74d10908fa370a6eb"
+  },
+  "Coding_standards.md": {
+    "mtime": 1785950793.1525545,
+    "ast_hash": "041d23362ef5d27c7babdfb32d52a299",
+    "semantic_hash": "041d23362ef5d27c7babdfb32d52a299"
+  },
+  "Project_Overview.md": {
+    "mtime": 1785929310.4903686,
+    "ast_hash": "08b831034bd373e39305990f72f5dcb3",
+    "semantic_hash": "08b831034bd373e39305990f72f5dcb3"
+  },
+  "README.md": {
+    "mtime": 1785929286.5089178,
+    "ast_hash": "d5bfeaf14e8f15eee5449380a7c12a7a",
+    "semantic_hash": "d5bfeaf14e8f15eee5449380a7c12a7a"
+  },
+  "Requirements.md": {
+    "mtime": 1785929367.7702768,
+    "ast_hash": "7ef04d1ef1adcb91d5de935cfaaf169b",
+    "semantic_hash": "7ef04d1ef1adcb91d5de935cfaaf169b"
+  },
+  "Rules.md": {
+    "mtime": 1785929691.55276,
+    "ast_hash": "208e5690dc6f25f6b861edae7daa8fe5",
+    "semantic_hash": "208e5690dc6f25f6b861edae7daa8fe5"
+  },
+  "Structure.md": {
+    "mtime": 1785929730.246982,
+    "ast_hash": "932ea1101eb19fd6da841ba3709f4adc",
+    "semantic_hash": "932ea1101eb19fd6da841ba3709f4adc"
+  },
+  "System_archtiecture.md": {
+    "mtime": 1785950142.1976087,
+    "ast_hash": "a7de462cbf1f932e3e1d307e0265fb87",
+    "semantic_hash": "a7de462cbf1f932e3e1d307e0265fb87"
+  },
+  "Tech.md": {
+    "mtime": 1785928431.2539694,
+    "ast_hash": "9d3b6e588e4c0aa8e4373b3f520523e6",
+    "semantic_hash": "9d3b6e588e4c0aa8e4373b3f520523e6"
+  },
+  "UI_Guidelines.md": {
+    "mtime": 1785950697.7187338,
+    "ast_hash": "1778a62aebe1630c677ab48fdb136033",
+    "semantic_hash": "1778a62aebe1630c677ab48fdb136033"
+  },
+  "business_rules.md": {
+    "mtime": 1785950008.2948267,
+    "ast_hash": "6d3ba14ce8e5b37104bfa51115a47c11",
+    "semantic_hash": "6d3ba14ce8e5b37104bfa51115a47c11"
+  },
+  "database_Schema.md": {
+    "mtime": 1785949849.3881812,
+    "ast_hash": "190b0c3cc61d4deee9cc0eb489452d69",
+    "semantic_hash": "190b0c3cc61d4deee9cc0eb489452d69"
+  },
+  "development_roadmap.md": {
+    "mtime": 1785950901.5106015,
+    "ast_hash": "e6b4e845180c23813f3657f35c93c8a5",
+    "semantic_hash": "e6b4e845180c23813f3657f35c93c8a5"
+  },
+  "instructions.md": {
+    "mtime": 1785928543.21768,
+    "ast_hash": "e3693c4417af166081d780a2ed0a52ad",
+    "semantic_hash": "e3693c4417af166081d780a2ed0a52ad"
+  },
+  ".claude/settings.json": {
+    "mtime": 1786165785.5089898,
+    "ast_hash": "598cb075410bcd95220ac90bbb60344a",
+    "semantic_hash": "598cb075410bcd95220ac90bbb60344a"
+  },
+  "client/.oxlintrc.json": {
+    "mtime": 1786099235.3181143,
+    "ast_hash": "029f4905006c1fffd96bc863e2d98d3e",
+    "semantic_hash": "029f4905006c1fffd96bc863e2d98d3e"
+  },
+  "client/package.json": {
+    "mtime": 1786099418.4844997,
+    "ast_hash": "d3f09c3467b25922d352379a24f8212b",
+    "semantic_hash": "d3f09c3467b25922d352379a24f8212b"
+  },
+  "client/src/App.tsx": {
+    "mtime": 1786099466.2804165,
+    "ast_hash": "37487bee92066b356e5a10f1b723def3",
+    "semantic_hash": "37487bee92066b356e5a10f1b723def3"
+  },
+  "client/src/components/AddCardModal.tsx": {
+    "mtime": 1786099434.4349892,
+    "ast_hash": "3a762dae91666da411c9cc1ea4b75489",
+    "semantic_hash": "3a762dae91666da411c9cc1ea4b75489"
+  },
+  "client/src/components/CreditCardItem.tsx": {
+    "mtime": 1786099515.3289447,
+    "ast_hash": "48645e6282c8e7f68c27446d16e8ecac",
+    "semantic_hash": "48645e6282c8e7f68c27446d16e8ecac"
+  },
+  "client/src/components/Navbar.tsx": {
+    "mtime": 1786099416.602679,
+    "ast_hash": "378e56a129e16c7f83b847ab626cfb1c",
+    "semantic_hash": "378e56a129e16c7f83b847ab626cfb1c"
+  },
+  "client/src/components/PaymentModal.tsx": {
+    "mtime": 1786099516.770007,
+    "ast_hash": "05fc5332dec080f6c0422e954c7eb6c4",
+    "semantic_hash": "05fc5332dec080f6c0422e954c7eb6c4"
+  },
+  "client/src/main.tsx": {
+    "mtime": 1786099236.0256686,
+    "ast_hash": "787e5a07efeb2bf6209d5937195f2f68",
+    "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
+  },
+  "client/src/pages/AdminDashboard.tsx": {
+    "mtime": 1786099541.3203342,
+    "ast_hash": "74316cfa68dedb55dc89f3e2122a6f20",
+    "semantic_hash": "74316cfa68dedb55dc89f3e2122a6f20"
+  },
+  "client/src/pages/AuthPage.tsx": {
+    "mtime": 1786100130.7892969,
+    "ast_hash": "cfefbd25755704e90cd9b8bc6e49c0f4",
+    "semantic_hash": "cfefbd25755704e90cd9b8bc6e49c0f4"
+  },
+  "client/src/pages/CustomerDashboard.tsx": {
+    "mtime": 1786099549.3277617,
+    "ast_hash": "5459248d2e865b2ad659c2158dab2806",
+    "semantic_hash": "5459248d2e865b2ad659c2158dab2806"
+  },
+  "client/src/pages/MerchantDashboard.tsx": {
+    "mtime": 1786099550.8486412,
+    "ast_hash": "e525f1e72d8ae853bf8e93b1659cf009",
+    "semantic_hash": "e525f1e72d8ae853bf8e93b1659cf009"
+  },
+  "client/src/services/api.ts": {
+    "mtime": 1786100120.114317,
+    "ast_hash": "48d07bdc88e0f3d5a45cfa45a2bbd6f6",
+    "semantic_hash": "48d07bdc88e0f3d5a45cfa45a2bbd6f6"
+  },
+  "client/src/store/useAuthStore.ts": {
+    "mtime": 1786099526.1332867,
+    "ast_hash": "78fda2b1a3465c1c442ba646d84724a4",
+    "semantic_hash": "78fda2b1a3465c1c442ba646d84724a4"
+  },
+  "client/src/types/index.ts": {
+    "mtime": 1786099397.6144671,
+    "ast_hash": "4550a240dde5347f2cb04f6d30a7f139",
+    "semantic_hash": "4550a240dde5347f2cb04f6d30a7f139"
+  },
+  "client/tsconfig.app.json": {
+    "mtime": 1786099235.385645,
+    "ast_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a",
+    "semantic_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a"
+  },
+  "client/tsconfig.json": {
+    "mtime": 1786099235.4046552,
+    "ast_hash": "a3d39fa780ebff65444de257f291ce6c",
+    "semantic_hash": "a3d39fa780ebff65444de257f291ce6c"
+  },
+  "client/tsconfig.node.json": {
+    "mtime": 1786099235.4196935,
+    "ast_hash": "f9cb81ddcea69ffdab672fc8c48dca66",
+    "semantic_hash": "f9cb81ddcea69ffdab672fc8c48dca66"
+  },
+  "client/vite.config.ts": {
+    "mtime": 1786099386.4864376,
+    "ast_hash": "5b641ab5f85eff4b0b9acec3417ca9b5",
+    "semantic_hash": "5b641ab5f85eff4b0b9acec3417ca9b5"
+  },
+  "server/Authentication/JwtTokenGenerator.cs": {
+    "mtime": 1786099112.3699052,
+    "ast_hash": "45abbbd9ec8c5fe95ed7f6fc4dce3af2",
+    "semantic_hash": "45abbbd9ec8c5fe95ed7f6fc4dce3af2"
+  },
+  "server/Configuration/JwtSettings.cs": {
+    "mtime": 1786099110.2972836,
+    "ast_hash": "625c25f36a2c0ebf0a6335951f3e7406",
+    "semantic_hash": "625c25f36a2c0ebf0a6335951f3e7406"
+  },
+  "server/Controllers/AdminController.cs": {
+    "mtime": 1786099181.3100677,
+    "ast_hash": "3b6281d21824bd8c1d136549a2622917",
+    "semantic_hash": "3b6281d21824bd8c1d136549a2622917"
+  },
+  "server/Controllers/AuthController.cs": {
+    "mtime": 1786099173.1641645,
+    "ast_hash": "7f7cefcb074d9228e424509e7a14b942",
+    "semantic_hash": "7f7cefcb074d9228e424509e7a14b942"
+  },
+  "server/Controllers/CardController.cs": {
+    "mtime": 1786099177.2028995,
+    "ast_hash": "aad5aff89fe27a0e6752496019f18282",
+    "semantic_hash": "aad5aff89fe27a0e6752496019f18282"
+  },
+  "server/Controllers/PaymentController.cs": {
+    "mtime": 1786099175.1826448,
+    "ast_hash": "c660bb1b3f749aaaf86af31ebc0a12bd",
+    "semantic_hash": "c660bb1b3f749aaaf86af31ebc0a12bd"
+  },
+  "server/Controllers/TransactionController.cs": {
+    "mtime": 1786099179.2660491,
+    "ast_hash": "6cb37ac263e5094b89490da83cf177aa",
+    "semantic_hash": "6cb37ac263e5094b89490da83cf177aa"
+  },
+  "server/Controllers/WeatherForecastController.cs": {
+    "mtime": 1786098958.6155045,
+    "ast_hash": "158cbd053852d582d120fb7687b7fcc6",
+    "semantic_hash": "158cbd053852d582d120fb7687b7fcc6"
+  },
+  "server/Data/Context/SecurePayDbContext.cs": {
+    "mtime": 1786100102.6696954,
+    "ast_hash": "524c05e68c75b3accc35f4c700978db1",
+    "semantic_hash": "524c05e68c75b3accc35f4c700978db1"
+  },
+  "server/Data/Seed/DatabaseSeeder.cs": {
+    "mtime": 1786099055.3104935,
+    "ast_hash": "c02a434cf0815e384fea6f11b971aafd",
+    "semantic_hash": "c02a434cf0815e384fea6f11b971aafd"
+  },
+  "server/Enums/CardStatus.cs": {
+    "mtime": 1786098994.0655646,
+    "ast_hash": "493a8099d3e70afafc50f94d59808dbd",
+    "semantic_hash": "493a8099d3e70afafc50f94d59808dbd"
+  },
+  "server/Enums/FraudSeverity.cs": {
+    "mtime": 1786099002.2266932,
+    "ast_hash": "a5233ff948106bcb3b7ae09bfaf2c50e",
+    "semantic_hash": "a5233ff948106bcb3b7ae09bfaf2c50e"
+  },
+  "server/Enums/NotificationStatus.cs": {
+    "mtime": 1786099000.1765144,
+    "ast_hash": "c3bbb545397e9e546c00aa3c2702f6e7",
+    "semantic_hash": "c3bbb545397e9e546c00aa3c2702f6e7"
+  },
+  "server/Enums/NotificationType.cs": {
+    "mtime": 1786098998.1420805,
+    "ast_hash": "c5bf7c5993bf7f524b521c6abccb95d4",
+    "semantic_hash": "c5bf7c5993bf7f524b521c6abccb95d4"
+  },
+  "server/Enums/OTPPurpose.cs": {
+    "mtime": 1786099004.262506,
+    "ast_hash": "910f3470e3497eae9640a1c803269d51",
+    "semantic_hash": "910f3470e3497eae9640a1c803269d51"
+  },
+  "server/Enums/TransactionStatus.cs": {
+    "mtime": 1786098996.0866668,
+    "ast_hash": "6966e79079e5a09cc23f41650e9d9a89",
+    "semantic_hash": "6966e79079e5a09cc23f41650e9d9a89"
+  },
+  "server/Enums/UserRole.cs": {
+    "mtime": 1786098992.0259569,
+    "ast_hash": "4926c82a76eb27ae83332923d5732219",
+    "semantic_hash": "4926c82a76eb27ae83332923d5732219"
+  },
+  "server/Middleware/DevAuthBypassMiddleware.cs": {
+    "mtime": 1786100075.4057558,
+    "ast_hash": "5b1de5b0ab18e402fae25a90b082bc9c",
+    "semantic_hash": "5b1de5b0ab18e402fae25a90b082bc9c"
+  },
+  "server/Models/DTOs/Requests/AddCardRequest.cs": {
+    "mtime": 1786099122.7624595,
+    "ast_hash": "7dd74ef8928214bef99edfa0bc2d78a1",
+    "semantic_hash": "7dd74ef8928214bef99edfa0bc2d78a1"
+  },
+  "server/Models/DTOs/Requests/LoginRequest.cs": {
+    "mtime": 1786099120.6831708,
+    "ast_hash": "88e8378c8e021a735da6bf91a8da34d8",
+    "semantic_hash": "88e8378c8e021a735da6bf91a8da34d8"
+  },
+  "server/Models/DTOs/Requests/ProcessPaymentRequest.cs": {
+    "mtime": 1786099086.2294319,
+    "ast_hash": "67701d9fb34fa3cf59c66c0ee646572a",
+    "semantic_hash": "67701d9fb34fa3cf59c66c0ee646572a"
+  },
+  "server/Models/DTOs/Requests/RegisterRequest.cs": {
+    "mtime": 1786099118.66012,
+    "ast_hash": "4124d8cc4c3983fc35334333b012ad1b",
+    "semantic_hash": "4124d8cc4c3983fc35334333b012ad1b"
+  },
+  "server/Models/DTOs/Responses/AuthResponse.cs": {
+    "mtime": 1786099124.7996244,
+    "ast_hash": "c3db04aae76c6eaa168f542f0b7b7794",
+    "semantic_hash": "c3db04aae76c6eaa168f542f0b7b7794"
+  },
+  "server/Models/DTOs/Responses/CardDto.cs": {
+    "mtime": 1786099126.8177447,
+    "ast_hash": "edf551d0ed22d7264bd47ef293ade888",
+    "semantic_hash": "edf551d0ed22d7264bd47ef293ade888"
+  },
+  "server/Models/DTOs/Responses/FraudLogDto.cs": {
+    "mtime": 1786099130.9675665,
+    "ast_hash": "502616a0a77b9128f36c1a886bd662e2",
+    "semantic_hash": "502616a0a77b9128f36c1a886bd662e2"
+  },
+  "server/Models/DTOs/Responses/ProcessPaymentResponse.cs": {
+    "mtime": 1786099088.2623258,
+    "ast_hash": "4428db5a0df4b1be955444bb8b00b778",
+    "semantic_hash": "4428db5a0df4b1be955444bb8b00b778"
+  },
+  "server/Models/DTOs/Responses/TransactionDto.cs": {
+    "mtime": 1786099128.89033,
+    "ast_hash": "4322ae7986d8ae5895f28097b0972edd",
+    "semantic_hash": "4322ae7986d8ae5895f28097b0972edd"
+  },
+  "server/Models/Entities/AuditLog.cs": {
+    "mtime": 1786099034.4393532,
+    "ast_hash": "667a9d8fb7c024899b511e77535884de",
+    "semantic_hash": "667a9d8fb7c024899b511e77535884de"
+  },
+  "server/Models/Entities/BaseEntity.cs": {
+    "mtime": 1786099008.9609866,
+    "ast_hash": "7e22d37a13be8a94a409c1b4b17cf5a6",
+    "semantic_hash": "7e22d37a13be8a94a409c1b4b17cf5a6"
+  },
+  "server/Models/Entities/Card.cs": {
+    "mtime": 1786099024.2367795,
+    "ast_hash": "0ed9d189e2aba870fd70c9631f8655e7",
+    "semantic_hash": "0ed9d189e2aba870fd70c9631f8655e7"
+  },
+  "server/Models/Entities/FraudLog.cs": {
+    "mtime": 1786099028.304263,
+    "ast_hash": "f5b70c6c99cb803881d3509dc7f37d59",
+    "semantic_hash": "f5b70c6c99cb803881d3509dc7f37d59"
+  },
+  "server/Models/Entities/MerchantProfile.cs": {
+    "mtime": 1786099022.178054,
+    "ast_hash": "1185ba5317d6b6cf1cd7b0036b811884",
+    "semantic_hash": "1185ba5317d6b6cf1cd7b0036b811884"
+  },
+  "server/Models/Entities/Notification.cs": {
+    "mtime": 1786099032.386881,
+    "ast_hash": "59d34eea52c23f02f70b582a981c41a5",
+    "semantic_hash": "59d34eea52c23f02f70b582a981c41a5"
+  },
+  "server/Models/Entities/OTP.cs": {
+    "mtime": 1786099030.334669,
+    "ast_hash": "16cfc56e2d313d6f61024c0b5b76268c",
+    "semantic_hash": "16cfc56e2d313d6f61024c0b5b76268c"
+  },
+  "server/Models/Entities/RefreshToken.cs": {
+    "mtime": 1786099036.4745135,
+    "ast_hash": "7fec99e17a3eeec011a5b39dc4fab32d",
+    "semantic_hash": "7fec99e17a3eeec011a5b39dc4fab32d"
+  },
+  "server/Models/Entities/Transaction.cs": {
+    "mtime": 1786099026.2627666,
+    "ast_hash": "6610419e666ccaa0319cf2b0a36637ee",
+    "semantic_hash": "6610419e666ccaa0319cf2b0a36637ee"
+  },
+  "server/Models/Entities/User.cs": {
+    "mtime": 1786099020.0499265,
+    "ast_hash": "21367ae5a0f22e96b9a255e3398c93ad",
+    "semantic_hash": "21367ae5a0f22e96b9a255e3398c93ad"
+  },
+  "server/Program.cs": {
+    "mtime": 1786100109.2887611,
+    "ast_hash": "a0498f0b7ed54ff6115596db445acf3b",
+    "semantic_hash": "a0498f0b7ed54ff6115596db445acf3b"
+  },
+  "server/Properties/launchSettings.json": {
+    "mtime": 1786098958.6207955,
+    "ast_hash": "1425e3aa0a41ea0ad287105a077bcd8b",
+    "semantic_hash": "1425e3aa0a41ea0ad287105a077bcd8b"
+  },
+  "server/Repositories/Implementations/Repository.cs": {
+    "mtime": 1786099105.3331563,
+    "ast_hash": "423b78ff467f2629740fc224e6b39d27",
+    "semantic_hash": "423b78ff467f2629740fc224e6b39d27"
+  },
+  "server/Repositories/Interfaces/IRepository.cs": {
+    "mtime": 1786099103.2591617,
+    "ast_hash": "f552ba031fad1cdc7d499ba61e94d6d2",
+    "semantic_hash": "f552ba031fad1cdc7d499ba61e94d6d2"
+  },
+  "server/SecurePay.API.csproj": {
+    "mtime": 1786100068.283074,
+    "ast_hash": "2fe50f3ce0252d61edf133191f254086",
+    "semantic_hash": "2fe50f3ce0252d61edf133191f254086"
+  },
+  "server/SecurePay.API.slnx": {
+    "mtime": 1786098974.2923617,
+    "ast_hash": "0fbcff3d559c11b7c73c3fcf51432748",
+    "semantic_hash": "0fbcff3d559c11b7c73c3fcf51432748"
+  },
+  "server/ServicesInternal/FraudDetection/FraudDetectionEngine.cs": {
+    "mtime": 1786099063.191618,
+    "ast_hash": "a88cee18feb08ae5b91e9258970ef48c",
+    "semantic_hash": "a88cee18feb08ae5b91e9258970ef48c"
+  },
+  "server/ServicesInternal/FraudDetection/IFraudDetectionEngine.cs": {
+    "mtime": 1786099061.1677778,
+    "ast_hash": "04ab63200686ba91c1c21cf73eaa8ac6",
+    "semantic_hash": "04ab63200686ba91c1c21cf73eaa8ac6"
+  },
+  "server/ServicesInternal/Notification/INotificationService.cs": {
+    "mtime": 1786099069.0944538,
+    "ast_hash": "70ff3c41f6d27d6db1c1c4b91bc9f224",
+    "semantic_hash": "70ff3c41f6d27d6db1c1c4b91bc9f224"
+  },
+  "server/ServicesInternal/Notification/NotificationService.cs": {
+    "mtime": 1786099071.1280174,
+    "ast_hash": "a696e310e064e59699585331561f543e",
+    "semantic_hash": "a696e310e064e59699585331561f543e"
+  },
+  "server/ServicesInternal/PaymentGateway/IPaymentGatewayService.cs": {
+    "mtime": 1786099095.5648475,
+    "ast_hash": "8e7ff864eb1e5972039c952d64c162ff",
+    "semantic_hash": "8e7ff864eb1e5972039c952d64c162ff"
+  },
+  "server/ServicesInternal/PaymentGateway/PaymentGatewayService.cs": {
+    "mtime": 1786099097.6349192,
+    "ast_hash": "d2aa56055ea2f43b49fd32e4de6f7b51",
+    "semantic_hash": "d2aa56055ea2f43b49fd32e4de6f7b51"
+  },
+  "server/ServicesInternal/Pdf/IPdfReceiptGenerator.cs": {
+    "mtime": 1786099077.6160405,
+    "ast_hash": "9309270a7cc00558edba65049ee8b7f2",
+    "semantic_hash": "9309270a7cc00558edba65049ee8b7f2"
+  },
+  "server/ServicesInternal/Pdf/PdfReceiptGenerator.cs": {
+    "mtime": 1786099288.6252658,
+    "ast_hash": "a8fb8735172aa0e122b922415e878b5c",
+    "semantic_hash": "a8fb8735172aa0e122b922415e878b5c"
+  },
+  "server/Services/Implementations/AdminService.cs": {
+    "mtime": 1786099166.0460663,
+    "ast_hash": "68b1778852a452f6133f0083e7259a4c",
+    "semantic_hash": "68b1778852a452f6133f0083e7259a4c"
+  },
+  "server/Services/Implementations/AuthService.cs": {
+    "mtime": 1786099141.8672352,
+    "ast_hash": "37ab9717d1595d076fc9b0d5e237e46a",
+    "semantic_hash": "37ab9717d1595d076fc9b0d5e237e46a"
+  },
+  "server/Services/Implementations/CardService.cs": {
+    "mtime": 1786099149.5732358,
+    "ast_hash": "978450b97bcdab083dbfb9fa4b3148c8",
+    "semantic_hash": "978450b97bcdab083dbfb9fa4b3148c8"
+  },
+  "server/Services/Implementations/TransactionService.cs": {
+    "mtime": 1786099157.9104364,
+    "ast_hash": "885a9a555a6daaf0009c0b490075e0cc",
+    "semantic_hash": "885a9a555a6daaf0009c0b490075e0cc"
+  },
+  "server/Services/Interfaces/IAdminService.cs": {
+    "mtime": 1786099164.0169053,
+    "ast_hash": "0e2b26d6c413e2d34c650e4458a7d76b",
+    "semantic_hash": "0e2b26d6c413e2d34c650e4458a7d76b"
+  },
+  "server/Services/Interfaces/IAuthService.cs": {
+    "mtime": 1786099139.8454554,
+    "ast_hash": "1061a7439c245d6d0aec5be54ea216e3",
+    "semantic_hash": "1061a7439c245d6d0aec5be54ea216e3"
+  },
+  "server/Services/Interfaces/ICardService.cs": {
+    "mtime": 1786099147.5267494,
+    "ast_hash": "d01f7d418708fc387a881d23ae9d1dc9",
+    "semantic_hash": "d01f7d418708fc387a881d23ae9d1dc9"
+  },
+  "server/Services/Interfaces/ITransactionService.cs": {
+    "mtime": 1786099155.819205,
+    "ast_hash": "c8803808af30e88e29569ac759c851af",
+    "semantic_hash": "c8803808af30e88e29569ac759c851af"
+  },
+  "server/WeatherForecast.cs": {
+    "mtime": 1786098958.7004147,
+    "ast_hash": "53c709931d8fc71d75e810961226203d",
+    "semantic_hash": "53c709931d8fc71d75e810961226203d"
+  },
+  "server/appsettings.Development.json": {
+    "mtime": 1786100090.4284766,
+    "ast_hash": "af856318b7f569b496ac71c8166d2bba",
+    "semantic_hash": "af856318b7f569b496ac71c8166d2bba"
+  },
+  "server/appsettings.json": {
+    "mtime": 1786100088.3229854,
+    "ast_hash": "fa4223b57febb6ee65be09acc65bff30",
+    "semantic_hash": "fa4223b57febb6ee65be09acc65bff30"
+  },
+  "server/bin/Debug/net10.0/SecurePay.API.deps.json": {
+    "mtime": 1786100146.449631,
+    "ast_hash": "a7cf774e6e338998d8b2b42f4f88505b",
+    "semantic_hash": "a7cf774e6e338998d8b2b42f4f88505b"
+  },
+  "server/bin/Debug/net10.0/SecurePay.API.runtimeconfig.json": {
+    "mtime": 1786100146.533234,
+    "ast_hash": "37595336dae30b037bd95e5047b95825",
+    "semantic_hash": "37595336dae30b037bd95e5047b95825"
+  },
+  "server/bin/Debug/net10.0/SecurePay.API.staticwebassets.endpoints.json": {
+    "mtime": 1786099351.8257475,
+    "ast_hash": "f44ca44dd881261586b84442f2201257",
+    "semantic_hash": "f44ca44dd881261586b84442f2201257"
+  },
+  "server/bin/Debug/net10.0/appsettings.Development.json": {
+    "mtime": 1786100090.4284766,
+    "ast_hash": "af856318b7f569b496ac71c8166d2bba",
+    "semantic_hash": "af856318b7f569b496ac71c8166d2bba"
+  },
+  "server/bin/Debug/net10.0/appsettings.json": {
+    "mtime": 1786100088.3229854,
+    "ast_hash": "fa4223b57febb6ee65be09acc65bff30",
+    "semantic_hash": "fa4223b57febb6ee65be09acc65bff30"
+  },
+  "server/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": {
+    "mtime": 1786099202.8929763,
+    "ast_hash": "8479efdf06e2d26e053d27ffa6964185",
+    "semantic_hash": "8479efdf06e2d26e053d27ffa6964185"
+  },
+  "server/obj/Debug/net10.0/SecurePay.API.AssemblyInfo.cs": {
+    "mtime": 1786099202.996268,
+    "ast_hash": "2350ddb2d7f44be956994fd4a50f3d7e",
+    "semantic_hash": "2350ddb2d7f44be956994fd4a50f3d7e"
+  },
+  "server/obj/Debug/net10.0/SecurePay.API.GlobalUsings.g.cs": {
+    "mtime": 1786099201.9396467,
+    "ast_hash": "5b3fdaae7b59d230d7d136eab049a98a",
+    "semantic_hash": "5b3fdaae7b59d230d7d136eab049a98a"
+  },
+  "server/obj/Debug/net10.0/SecurePay.API.MvcApplicationPartsAssemblyInfo.cs": {
+    "mtime": 1786100139.7902267,
+    "ast_hash": "904a0f2dfe7deafe1508e17c8c31c109",
+    "semantic_hash": "904a0f2dfe7deafe1508e17c8c31c109"
+  },
+  "server/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json": {
+    "mtime": 1786100146.096966,
+    "ast_hash": "7cc01660bc777f65c77db1033287478a",
+    "semantic_hash": "7cc01660bc777f65c77db1033287478a"
+  },
+  "server/obj/Debug/net10.0/rjsmrazor.dswa.cache.json": {
+    "mtime": 1786100146.0899725,
+    "ast_hash": "be2b58b5247e8e3bd8641e99571e04a9",
+    "semantic_hash": "be2b58b5247e8e3bd8641e99571e04a9"
+  },
+  "server/obj/Debug/net10.0/rpswa.dswa.cache.json": {
+    "mtime": 1786100139.450844,
+    "ast_hash": "fa65b37fb73f519bd38286371873447b",
+    "semantic_hash": "fa65b37fb73f519bd38286371873447b"
+  },
+  "server/obj/Debug/net10.0/staticwebassets.build.endpoints.json": {
+    "mtime": 1786099351.8257475,
+    "ast_hash": "f44ca44dd881261586b84442f2201257",
+    "semantic_hash": "f44ca44dd881261586b84442f2201257"
+  },
+  "server/obj/Debug/net10.0/staticwebassets.build.json": {
+    "mtime": 1786099351.810734,
+    "ast_hash": "33376575b0f7245ef69188f0682aa230",
+    "semantic_hash": "33376575b0f7245ef69188f0682aa230"
+  },
+  "server/obj/SecurePay.API.csproj.nuget.dgspec.json": {
+    "mtime": 1786100068.3052266,
+    "ast_hash": "1102fd3cfef2a82cfaa9b90fb07fc7b3",
+    "semantic_hash": "1102fd3cfef2a82cfaa9b90fb07fc7b3"
+  },
+  "server/obj/project.assets.json": {
+    "mtime": 1786100068.2941158,
+    "ast_hash": "7a8789797a09e8c07f1920b24fbf210e",
+    "semantic_hash": "7a8789797a09e8c07f1920b24fbf210e"
+  },
+  "CLAUDE.md": {
+    "mtime": 1786165785.5069938,
+    "ast_hash": "8a6643a420fdad6bfb583523bc6cef16",
+    "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
+  },
+  "client/README.md": {
+    "mtime": 1786099235.4740245,
+    "ast_hash": "10495bfcc6c568eca4dab6dd5df795d3",
+    "semantic_hash": "10495bfcc6c568eca4dab6dd5df795d3"
+  },
+  "client/index.html": {
+    "mtime": 1786099479.2251184,
+    "ast_hash": "b2d49d99fa47571c5848a52825deed54",
+    "semantic_hash": "b2d49d99fa47571c5848a52825deed54"
+  },
+  "server/bin/Debug/net10.0/LatoFont/OFL.txt": {
+    "mtime": 1785310574.0,
+    "ast_hash": "99aa8fee7ed71044ae773b92d79ab24c",
+    "semantic_hash": "99aa8fee7ed71044ae773b92d79ab24c"
+  },
+  "server/obj/Debug/net10.0/SecurePay.API.csproj.FileListAbsolute.txt": {
+    "mtime": 1786100146.5798922,
+    "ast_hash": "b02cdff629abe1a81736a3f3a7604525",
+    "semantic_hash": "b02cdff629abe1a81736a3f3a7604525"
+  },
+  "client/public/favicon.svg": {
+    "mtime": 1786099235.6646712,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": "7e840862161341271697daa99a40d76b"
+  },
+  "client/public/icons.svg": {
+    "mtime": 1786099235.746755,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": "3b4fcfcf393eca4d264dca4a4663bc37"
+  },
+  "client/src/assets/hero.png": {
+    "mtime": 1786099235.5422215,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": "aead493361b27e7510691c5d7072dfc1"
+  },
+  "client/src/assets/react.svg": {
+    "mtime": 1786099235.8159907,
+    "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "client/src/assets/vite.svg": {
+    "mtime": 1786099235.8775165,
+    "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": "9960a24288958394ac50e57ff638b036"
+  }
+}

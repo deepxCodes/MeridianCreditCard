@@ -1,0 +1,10 @@
+D:\SIDE PROJECTS\Credit Card Processing System\CLAUDE.md
+D:\SIDE PROJECTS\Credit Card Processing System\client\README.md
+D:\SIDE PROJECTS\Credit Card Processing System\client\index.html
+D:\SIDE PROJECTS\Credit Card Processing System\server\bin\Debug\net10.0\LatoFont\OFL.txt
+D:\SIDE PROJECTS\Credit Card Processing System\server\obj\Debug\net10.0\SecurePay.API.csproj.FileListAbsolute.txt
+D:\SIDE PROJECTS\Credit Card Processing System\client\public\favicon.svg
+D:\SIDE PROJECTS\Credit Card Processing System\client\public\icons.svg
+D:\SIDE PROJECTS\Credit Card Processing System\client\src\assets\hero.png
+D:\SIDE PROJECTS\Credit Card Processing System\client\src\assets\react.svg
+D:\SIDE PROJECTS\Credit Card Processing System\client\src\assets\vite.svg
