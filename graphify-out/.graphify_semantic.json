@@ -1,0 +1,29 @@
+{
+  "nodes": [
+    {
+      "id": "CLAUDE.md:graphify_rules",
+      "label": "Graphify Integration Rules",
+      "node_type": "CONCEPT",
+      "source_file": "CLAUDE.md",
+      "summary": "Rules for maintaining and querying the graphify knowledge graph in CLAUDE.md"
+    },
+    {
+      "id": "client/index.html:root",
+      "label": "Client HTML Root",
+      "node_type": "UI_ENTRY",
+      "source_file": "client/index.html",
+      "summary": "HTML entry point mounting main.tsx for SecurePay frontend"
+    }
+  ],
+  "edges": [
+    {
+      "source": "client/index.html:root",
+      "target": "client/src/main.tsx",
+      "relation": "mounts",
+      "provenance": "EXTRACTED"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

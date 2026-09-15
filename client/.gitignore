@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# AI / Agent instruction files
+CLAUDE.md
+API_Specification.md
+business_rules.md
+Coding_standards.md
+database_Schema.md
+db_credentials.json
+development_roadmap.md
+instructions.md
+Project_Overview.md
+Requirements.md
+Rules.md
+Structure.md
+System_architecture.md
+Tech.md
+UI_Guidelines.md
