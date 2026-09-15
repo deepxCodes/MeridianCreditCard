@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# AI / Agent instruction files
+CLAUDE.md
+API_Specification.md
+business_rules.md
+Coding_standards.md
+database_Schema.md
+db_credentials.json
+development_roadmap.md
+instructions.md
+Project_Overview.md
+Requirements.md
+Rules.md
+Structure.md
+System_architecture.md
+Tech.md
+UI_Guidelines.md
