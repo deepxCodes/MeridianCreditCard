@@ -23,10 +23,13 @@ namespace MeridianCredit.API.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             // Apply only to admin endpoints
-            if (context.Request.Path.StartsWithSegments("/admin"))
+            if (_whitelist.Length > 0 && context.Request.Path.StartsWithSegments("/api/admin"))
             {
-                var remoteIp = context.Connection.RemoteIpAddress?.ToString();
-                if (remoteIp == null || !_whitelist.Contains(remoteIp))
+                var remoteIpAddress = context.Connection.RemoteIpAddress;
+                var isLoopback = remoteIpAddress != null && System.Net.IPAddress.IsLoopback(remoteIpAddress);
+                var remoteIp = remoteIpAddress?.ToString();
+
+                if (!isLoopback && (remoteIp == null || !_whitelist.Contains(remoteIp)))
                 {
                     _logger.LogWarning("Blocked IP {RemoteIp} from accessing admin endpoint {Path}", remoteIp, context.Request.Path);
                     context.Response.StatusCode = StatusCodes.Status403Forbidden;

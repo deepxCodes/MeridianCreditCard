@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AuthResponse, Card, CardStatus, CreditCardApplication, DashboardStats, FraudLog, NotificationItem, ProcessPaymentRequest, ProcessPaymentResponse, Transaction, User } from '../types';
+import { useAuthStore } from '../store/useAuthStore';
 
 const API_BASE_URL = 'http://localhost:5175/api';
 
@@ -9,29 +10,162 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 5000,
+  withCredentials: true,
 });
+
+// Share one refresh request when several API calls receive 401 together.
+let refreshPromise: Promise<AuthResponse> | null = null;
+
+const isAuthEndpoint = (url?: string) => {
+  if (!url) return false;
+
+  return [
+    '/auth/login',
+    '/auth/register',
+    '/auth/refresh-token',
+    '/auth/forgot-password',
+    '/auth/reset-password',
+  ].some((endpoint) => url.includes(endpoint));
+};
+
+const notifyUnauthorized = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  window.dispatchEvent(new CustomEvent('auth:unauthorized'));
+};
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config as (typeof error.config & {
+      _retry?: boolean;
+    }) | undefined;
+
+    if (
+      error.response?.status !== 401 ||
+      !originalRequest ||
+      originalRequest._retry ||
+      isAuthEndpoint(originalRequest.url)
+    ) {
+      return Promise.reject(error);
+    }
+
+    const storedRefreshToken = localStorage.getItem('refreshToken');
+
+    if (!storedRefreshToken) {
+      notifyUnauthorized();
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    try {
+      if (!refreshPromise) {
+        // The backend action accepts the refresh token as a raw JSON string.
+        refreshPromise = axios
+          .post<AuthResponse>(
+            `${API_BASE_URL}/auth/refresh-token`,
+            storedRefreshToken,
+            {
+              headers: { 'Content-Type': 'application/json' },
+              timeout: 5000,
+              withCredentials: true,
+            }
+          )
+          .then((response) => response.data)
+          .finally(() => {
+            refreshPromise = null;
+          });
+      }
+
+      const authResponse = await refreshPromise;
+
+      localStorage.setItem('token', authResponse.accessToken);
+      localStorage.setItem('refreshToken', authResponse.refreshToken);
+
+      // Keep Zustand's in-memory token and user synchronized with localStorage.
+      useAuthStore.getState().setAuth(
+        authResponse.user,
+        authResponse.accessToken,
+        authResponse.refreshToken
+      );
+
+      originalRequest.headers.Authorization = `Bearer ${authResponse.accessToken}`;
+
+      return api(originalRequest);
+    } catch (refreshError: any) {
+      const status = refreshError.response?.status;
+
+      // Invalid, expired, or revoked refresh tokens require a fresh login.
+      // Network errors and server errors do not automatically destroy the session.
+      if (status === 400 || status === 401 || status === 403) {
+        notifyUnauthorized();
+      }
+
+      return Promise.reject(refreshError);
+    }
+  }
+);
 
 export const authApi = {
   login: async (emailOrUsername: string, password: string): Promise<AuthResponse> => {
     const res = await api.post<AuthResponse>('/auth/login', { emailOrUsername, password });
     return res.data;
   },
+
   register: async (payload: any): Promise<AuthResponse> => {
     const res = await api.post<AuthResponse>('/auth/register', payload);
     return res.data;
   },
+
+  /**
+   * Fetches the current authenticated user from the server.
+   * Returns null for an unauthenticated session.
+   * Network errors and server errors are rethrown.
+   */
+  me: async (): Promise<AuthResponse['user'] | null> => {
+    try {
+      const res = await api.get<AuthResponse['user']>('/auth/me');
+      return res.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        return null;
+      }
+
+      throw error;
+    }
+  },
+
+  /**
+   * Calls the backend logout endpoint to revoke the refresh token server-side.
+   * Local token cleanup is performed even if the server request fails.
+   */
+  logout: async (refreshToken?: string | null): Promise<void> => {
+    try {
+      await api.post('/auth/logout', { refreshToken: refreshToken ?? null });
+    } catch {
+      // Continue with local cleanup if the server request fails.
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+    }
+  },
+
   sendForgotPasswordOtp: async (contact: string): Promise<{ message: string }> => {
     const res = await api.post<{ message: string }>('/auth/forgot-password', { contact });
     return res.data;
   },
+
   resetPassword: async (contact: string, otp: string, newPassword: string): Promise<{ message: string }> => {
     const res = await api.post<{ message: string }>('/auth/reset-password', { contact, otp, newPassword });
     return res.data;
@@ -176,6 +310,16 @@ export const userApi = {
   },
   changePassword: async (currentPassword: string, newPassword: string): Promise<{ message: string }> => {
     const res = await api.post<{ message: string }>('/user/change-password', { currentPassword, newPassword });
+    return res.data;
+  },
+  registerMerchant: async (payload: {
+    businessName: string;
+    businessCategory: string;
+    businessAddress?: string;
+    gstNumber?: string;
+    website?: string;
+  }): Promise<{ message: string; user: User }> => {
+    const res = await api.post<{ message: string; user: User }>('/user/register-merchant', payload);
     return res.data;
   },
   getNotifications: async (): Promise<NotificationItem[]> => {

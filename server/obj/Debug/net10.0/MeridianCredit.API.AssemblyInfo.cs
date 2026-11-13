@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MeridianCredit.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8f114ee50f74723231acdd47eccd12e81bf768b")]
 [assembly: System.Reflection.AssemblyProductAttribute("MeridianCredit.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MeridianCredit.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -17,9 +17,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <CreditCard className="w-5 h-5 text-white" />
-          </div>
+          <img
+            src="/Meridiancredit.jpg"
+            alt="Meridian Credit Logo"
+            className="w-10 h-10 rounded-full object-cover shadow-lg shadow-indigo-500/20 bg-white"
+          />
           <div>
             <h1 className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-400">
               Meridian Credit

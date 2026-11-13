@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using MeridianCredit.API.Data.Context;
 using MeridianCredit.API.Enums;
@@ -9,14 +10,15 @@ public static class DatabaseSeeder
 {
     public static async Task SeedAsync(MeridianCreditDbContext dbContext)
     {
-        // Apply pending EF Core migrations
         await dbContext.Database.MigrateAsync();
 
-        // 1. Seed or update Admin
-        var adminUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Role == UserRole.Admin);
-        if (adminUser == null)
+        // 1. Seed Admin only if it does not exist
+        var adminExists = await dbContext.Users
+            .AnyAsync(u => u.Role == UserRole.Admin);
+
+        if (!adminExists)
         {
-            adminUser = new User
+            var adminUser = new User
             {
                 FullName = "DeepG Administrator",
                 Email = "deepg@meridiancredit.com",
@@ -32,33 +34,28 @@ public static class DatabaseSeeder
             await dbContext.Users.AddAsync(adminUser);
             await dbContext.SaveChangesAsync();
         }
-        else
-        {
-            adminUser.Username = "deepg";
-            adminUser.Email = "deepg@meridiancredit.com";
-            adminUser.FullName = "DeepG Administrator";
-            adminUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword("Deep@Admin23");
-            adminUser.UpdatedAt = DateTime.UtcNow;
 
-            await dbContext.SaveChangesAsync();
-        }
+        // 2. Seed Merchants independently
+        var amazonExists = await dbContext.Users
+            .AnyAsync(u => u.Email == "payments@amazon-sim.com");
 
-        // 2. Seed Merchants
-        if (!await dbContext.Users.AnyAsync(u => u.Role == UserRole.Merchant))
+        if (!amazonExists)
         {
-            var merchantUser1 = new User
+            var merchantUser = new User
             {
                 FullName = "Amazon India Merchant",
                 Email = "payments@amazon-sim.com",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Merchant@123"),
                 PhoneNumber = "+91 9123456789",
                 Role = UserRole.Merchant,
-                IsEmailVerified = true
+                IsEmailVerified = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
-            var merchantProfile1 = new MerchantProfile
+            var merchantProfile = new MerchantProfile
             {
-                User = merchantUser1,
+                User = merchantUser,
                 BusinessName = "Amazon Simulator Store",
                 BusinessCategory = "E-Commerce",
                 BusinessAddress = "Tech Park, Bengaluru, India",
@@ -66,19 +63,30 @@ public static class DatabaseSeeder
                 Website = "https://amazon-sim.com"
             };
 
-            var merchantUser2 = new User
+            await dbContext.MerchantProfiles.AddAsync(merchantProfile);
+            await dbContext.SaveChangesAsync();
+        }
+
+        var starbucksExists = await dbContext.Users
+            .AnyAsync(u => u.Email == "merchant@starbucks-sim.com");
+
+        if (!starbucksExists)
+        {
+            var merchantUser = new User
             {
                 FullName = "Starbucks India",
                 Email = "merchant@starbucks-sim.com",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Merchant@123"),
                 PhoneNumber = "+91 9876500000",
                 Role = UserRole.Merchant,
-                IsEmailVerified = true
+                IsEmailVerified = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
-            var merchantProfile2 = new MerchantProfile
+            var merchantProfile = new MerchantProfile
             {
-                User = merchantUser2,
+                User = merchantUser,
                 BusinessName = "Starbucks Coffee Simulator",
                 BusinessCategory = "Food & Beverage",
                 BusinessAddress = "Connaught Place, New Delhi, India",
@@ -86,16 +94,15 @@ public static class DatabaseSeeder
                 Website = "https://starbucks-sim.com"
             };
 
-            await dbContext.MerchantProfiles.AddRangeAsync(
-                merchantProfile1,
-                merchantProfile2
-            );
-
+            await dbContext.MerchantProfiles.AddAsync(merchantProfile);
             await dbContext.SaveChangesAsync();
         }
 
-        // 3. Seed Customer & Cards
-        if (!await dbContext.Users.AnyAsync(u => u.Role == UserRole.Customer))
+        // 3. Seed Demo Customer
+        var customerExists = await dbContext.Users
+            .AnyAsync(u => u.Email == "customer@meridiancredit.com");
+
+        if (!customerExists)
         {
             var customer = new User
             {
@@ -104,7 +111,9 @@ public static class DatabaseSeeder
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Customer@123"),
                 PhoneNumber = "+91 9988776655",
                 Role = UserRole.Customer,
-                IsEmailVerified = true
+                IsEmailVerified = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             var card1 = new Card
@@ -143,6 +152,8 @@ public static class DatabaseSeeder
                 CardStatus = CardStatus.Blocked
             };
 
+            await dbContext.Users.AddAsync(customer);
+
             await dbContext.Cards.AddRangeAsync(
                 card1,
                 card2,
@@ -152,11 +163,15 @@ public static class DatabaseSeeder
             await dbContext.SaveChangesAsync();
         }
 
-        // 4. Seed Applications
-        if (!await dbContext.CreditCardApplications.AnyAsync())
+        // 4. Seed Demo Applications independently
+        var applicationsExist = await dbContext.CreditCardApplications
+            .AnyAsync();
+
+        if (!applicationsExist)
         {
             var customerUser = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.Role == UserRole.Customer);
+                .FirstOrDefaultAsync(u =>
+                    u.Email == "customer@meridiancredit.com");
 
             if (customerUser != null)
             {

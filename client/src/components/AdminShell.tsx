@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
+import { authApi } from '../services/api';
 import { AdminDashboard } from '../pages/AdminDashboard';
 import {
-  ShieldAlert,
   LayoutDashboard,
   LogOut,
   Bell,
@@ -11,17 +11,28 @@ import {
 } from 'lucide-react';
 
 export const AdminShell: React.FC = () => {
-  const { user, logout, showToast } = useAuthStore();
+  const { user, isInitializing, logout, showToast } = useAuthStore();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // Guard: redirect to admin login if not admin
+  // While the startup session check is running, show a loading state
+  // instead of immediately redirecting to login (which would cause a flash).
+  if (isInitializing) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <span style={{ color: 'var(--text-muted, #aaa)', fontSize: '14px' }}>Loading…</span>
+      </div>
+    );
+  }
+
+  // Guard: redirect to admin login if not authenticated as Admin
   if (!user || user.role !== 'Admin') {
     window.location.href = '/admin/login';
     return null;
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await authApi.logout();
     logout();
     showToast('Admin session terminated');
     window.location.href = '/admin/login';
@@ -53,10 +64,10 @@ export const AdminShell: React.FC = () => {
       <aside className={`admin-sidebar ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="admin-sidebar-header">
           <div className="admin-sidebar-brand">
-            <ShieldAlert size={22} className="admin-brand-icon" />
+            <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className="admin-brand-logo" />
             {!sidebarCollapsed && (
               <div className="admin-brand-text">
-                <span className="admin-brand-name">Meridian</span>
+                <span className="admin-brand-name">Meridian Credit</span>
                 <span className="admin-brand-label">Admin Console</span>
               </div>
             )}

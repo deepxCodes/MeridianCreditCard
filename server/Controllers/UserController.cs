@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MeridianCredit.API.Data.Context;
+using MeridianCredit.API.Enums;
 using MeridianCredit.API.Models.DTOs.Requests;
 using MeridianCredit.API.Models.DTOs.Responses;
+using MeridianCredit.API.Models.Entities;
 
 namespace MeridianCredit.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
@@ -19,20 +22,22 @@ public class UserController : ControllerBase
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Returns the authenticated user's ID from claims, or 0 if claims are absent.
+    /// Callers must check for 0 and return Unauthorized().
+    /// </summary>
     private int GetCurrentUserId()
     {
         var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (int.TryParse(idClaim, out var userId))
-        {
-            return userId;
-        }
-        return 1;
+        return int.TryParse(idClaim, out var userId) ? userId : 0;
     }
 
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile(CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
+
         var user = await _dbContext.Users
             .Include(u => u.MerchantProfile)
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
@@ -54,7 +59,16 @@ public class UserController : ControllerBase
             ZipCode = user.ZipCode,
             Role = user.Role,
             IsEmailVerified = user.IsEmailVerified,
-            LastLoginAt = user.LastLoginAt
+            LastLoginAt = user.LastLoginAt,
+            MerchantProfile = user.MerchantProfile == null ? null : new MerchantProfileDto
+            {
+                Id = user.MerchantProfile.Id,
+                BusinessName = user.MerchantProfile.BusinessName,
+                BusinessCategory = user.MerchantProfile.BusinessCategory,
+                BusinessAddress = user.MerchantProfile.BusinessAddress,
+                GSTNumber = user.MerchantProfile.GSTNumber,
+                Website = user.MerchantProfile.Website
+            }
         });
     }
 
@@ -62,6 +76,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request, CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
+
         var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         if (user == null) return NotFound(new { message = "User not found." });
 
@@ -82,6 +98,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
+
         var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         if (user == null) return NotFound(new { message = "User not found." });
 
@@ -96,10 +114,110 @@ public class UserController : ControllerBase
         return Ok(new { message = "Password updated successfully." });
     }
 
+    /// <summary>
+    /// Registers (or updates) the current customer's merchant profile in SQL Server.
+    /// Returns an updated UserDto (with MerchantProfile) so the client can refresh its state immediately.
+    /// </summary>
+    [HttpPost("register-merchant")]
+    public async Task<IActionResult> RegisterMerchant([FromBody] RegisterMerchantRequest request, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
+        var user = await _dbContext.Users
+            .Include(u => u.MerchantProfile)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        if (user == null) return NotFound(new { message = "User not found." });
+
+        if (user.MerchantProfile == null)
+        {
+            // Create a new merchant profile linked to this user
+            var profile = new MerchantProfile
+            {
+                UserId = userId,
+                BusinessName = request.BusinessName.Trim(),
+                BusinessCategory = request.BusinessCategory.Trim(),
+                BusinessAddress = request.BusinessAddress?.Trim(),
+                GSTNumber = request.GSTNumber?.Trim(),
+                Website = request.Website?.Trim()
+            };
+            await _dbContext.MerchantProfiles.AddAsync(profile, cancellationToken);
+            user.MerchantProfile = profile;
+        }
+        else
+        {
+            // Update existing profile
+            user.MerchantProfile.BusinessName = request.BusinessName.Trim();
+            user.MerchantProfile.BusinessCategory = request.BusinessCategory.Trim();
+            user.MerchantProfile.BusinessAddress = request.BusinessAddress?.Trim();
+            user.MerchantProfile.GSTNumber = request.GSTNumber?.Trim();
+            user.MerchantProfile.Website = request.Website?.Trim();
+        }
+
+        // Add a welcome notification for the merchant registration
+        var notif = new Notification
+        {
+            UserId = userId,
+            Subject = $"Merchant account activated",
+            Message = $"Your merchant business '{request.BusinessName.Trim()}' has been registered successfully. You can now access the Merchant Portal.",
+            NotificationType = NotificationType.General,
+            IsRead = false
+        };
+        await _dbContext.Notifications.AddAsync(notif, cancellationToken);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(new
+        {
+            message = "Merchant profile registered successfully.",
+            merchantProfile = new MerchantProfileDto
+            {
+                Id = user.MerchantProfile.Id,
+                BusinessName = user.MerchantProfile.BusinessName,
+                BusinessCategory = user.MerchantProfile.BusinessCategory,
+                BusinessAddress = user.MerchantProfile.BusinessAddress,
+                GSTNumber = user.MerchantProfile.GSTNumber,
+                Website = user.MerchantProfile.Website
+            },
+            user = new UserDto
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Address = user.Address,
+                City = user.City,
+                State = user.State,
+                ZipCode = user.ZipCode,
+                Role = user.Role,
+                IsEmailVerified = user.IsEmailVerified,
+                LastLoginAt = user.LastLoginAt,
+                MerchantProfile = new MerchantProfileDto
+                {
+                    Id = user.MerchantProfile.Id,
+                    BusinessName = user.MerchantProfile.BusinessName,
+                    BusinessCategory = user.MerchantProfile.BusinessCategory,
+                    BusinessAddress = user.MerchantProfile.BusinessAddress,
+                    GSTNumber = user.MerchantProfile.GSTNumber,
+                    Website = user.MerchantProfile.Website
+                }
+            }
+        });
+    }
+
     [HttpGet("notifications")]
     public async Task<IActionResult> GetNotifications(CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
         var notifications = await _dbContext.Notifications
             .Where(n => n.UserId == userId && !n.IsDeleted)
             .OrderByDescending(n => n.CreatedAt)
@@ -121,6 +239,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> MarkNotificationRead(int id, CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
+        if (userId == 0) return Unauthorized(new { message = "Not authenticated." });
         var notif = await _dbContext.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId, cancellationToken);
         if (notif != null)
         {

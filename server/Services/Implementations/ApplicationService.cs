@@ -29,8 +29,12 @@ public class ApplicationService : IApplicationService
 
     public async Task<ApplicationResponse> SubmitApplicationAsync(int userId, CreateApplicationRequest request, CancellationToken cancellationToken = default)
     {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var userEmail = user?.Email?.ToLower().Trim();
+        var reqEmail = request.Email?.ToLower().Trim();
+
         var existing = await _dbContext.CreditCardApplications
-            .FirstOrDefaultAsync(a => a.UserId == userId && !a.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(a => !a.IsDeleted && (a.UserId == userId || (userEmail != null && a.Email.ToLower() == userEmail) || (reqEmail != null && a.Email.ToLower() == reqEmail)), cancellationToken);
 
         var refCode = "MC-" + Random.Shared.Next(100000, 999999);
 
@@ -101,20 +105,33 @@ public class ApplicationService : IApplicationService
 
     public async Task<ApplicationResponse?> GetCurrentApplicationAsync(int userId, CancellationToken cancellationToken = default)
     {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var userEmail = user?.Email?.ToLower().Trim();
+
         var application = await _dbContext.CreditCardApplications
             .Include(a => a.IssuedCard)
             .OrderByDescending(a => a.CreatedAt)
-            .FirstOrDefaultAsync(a => a.UserId == userId && !a.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(a => !a.IsDeleted && (a.UserId == userId || (userEmail != null && a.Email.ToLower() == userEmail)), cancellationToken);
+
+        // Link to this userId if found via email
+        if (application != null && application.UserId != userId && user != null)
+        {
+            application.UserId = userId;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
 
         return application == null ? null : MapToResponse(application);
     }
 
     public async Task<ApplicationResponse> AdvanceStageAsync(int userId, AdvanceStageRequest request, CancellationToken cancellationToken = default)
     {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var userEmail = user?.Email?.ToLower().Trim();
+
         var application = await _dbContext.CreditCardApplications
             .Include(a => a.IssuedCard)
             .OrderByDescending(a => a.CreatedAt)
-            .FirstOrDefaultAsync(a => a.UserId == userId && !a.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(a => !a.IsDeleted && (a.UserId == userId || (userEmail != null && a.Email.ToLower() == userEmail)), cancellationToken);
 
         if (application == null)
         {

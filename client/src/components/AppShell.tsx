@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
-import { applicationApi, userApi } from '../services/api';
+import { applicationApi, authApi, userApi } from '../services/api';
 import type { NavPanel } from '../types';
+import styles from './AppShell.module.css';
 import { DashboardPanel } from '../pages/DashboardPanel';
 import { MerchantDashboard } from '../pages/MerchantDashboard';
 import { ApplyPanel } from '../pages/ApplyPanel';
 import { ConfirmationPanel } from '../pages/ConfirmationPanel';
 import { TrackingPanel } from '../pages/TrackingPanel';
-
 import { ProfilePanel } from '../pages/ProfilePanel';
 import { SupportPanel } from '../pages/SupportPanel';
+import { AdminDashboard } from '../pages/AdminDashboard';
 
 export const AppShell: React.FC = () => {
   const {
@@ -30,6 +31,9 @@ export const AppShell: React.FC = () => {
 
   // Fetch initial user application and notifications on mount
   useEffect(() => {
+    // Admin users don't have personal applications or customer notifications
+    if (user?.role === 'Admin') return;
+
     const loadInitialData = async () => {
       try {
         const [app, notifs] = await Promise.all([
@@ -43,6 +47,23 @@ export const AppShell: React.FC = () => {
       }
     };
     loadInitialData();
+
+    // Poll every 30 seconds so admin approve/reject actions are reflected
+    // in the customer dashboard without a page reload.
+    const pollInterval = setInterval(async () => {
+      try {
+        const [app, notifs] = await Promise.all([
+          applicationApi.getCurrent(),
+          userApi.getNotifications(),
+        ]);
+        if (app) setApplication(app);
+        if (notifs && notifs.length > 0) setNotifications(notifs);
+      } catch {
+        // silently ignore network errors during polling
+      }
+    }, 30_000);
+
+    return () => clearInterval(pollInterval);
   }, []);
 
   const panelTitles: Record<NavPanel, string> = {
@@ -53,6 +74,7 @@ export const AppShell: React.FC = () => {
     profile: 'Profile',
     support: 'Help & support',
     confirmation: 'Application submitted',
+    admin: 'System Administration',
   };
 
   const getInitials = (name?: string) => {
@@ -81,7 +103,8 @@ export const AppShell: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await authApi.logout();
     logout();
     showToast('You have been logged out');
   };
@@ -91,58 +114,73 @@ export const AppShell: React.FC = () => {
       {/* SIDEBAR */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="brand">
-          <span className="brand-mark" aria-hidden="true"></span>
+          <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className={`brand-logo ${styles.logoContainer}`} />
           <span className="brand-name">Meridian Credit</span>
         </div>
         <nav className="side-nav">
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'dashboard' ? 'active' : ''}`}
-            data-nav="dashboard"
-            onClick={() => handleNavClick('dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'merchant' ? 'active' : ''}`}
-            data-nav="merchant"
-            onClick={() => handleNavClick('merchant')}
-          >
-            Merchant Portal
-          </button>
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'apply' ? 'active' : ''}`}
-            data-nav="apply"
-            onClick={() => handleNavClick('apply')}
-          >
-            Apply for a card
-          </button>
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'tracking' ? 'active' : ''}`}
-            data-nav="tracking"
-            onClick={() => handleNavClick('tracking')}
-          >
-            Track application
-          </button>
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'profile' ? 'active' : ''}`}
-            data-nav="profile"
-            onClick={() => handleNavClick('profile')}
-          >
-            Profile
-          </button>
-          <button
-            type="button"
-            className={`side-link ${activePanel === 'support' ? 'active' : ''}`}
-            data-nav="support"
-            onClick={() => handleNavClick('support')}
-          >
-            Help &amp; support
-          </button>
+          {user?.role === 'Admin' ? (
+            // Admin-only navigation
+            <button
+              type="button"
+              className={`side-link ${activePanel === 'admin' ? 'active' : ''}`}
+              data-nav="admin"
+              onClick={() => handleNavClick('admin')}
+            >
+              ⚙ Admin Console
+            </button>
+          ) : (
+            // Regular customer/merchant navigation — all links visible to everyone
+            <>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'dashboard' ? 'active' : ''}`}
+                data-nav="dashboard"
+                onClick={() => handleNavClick('dashboard')}
+              >
+                Dashboard
+              </button>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'apply' ? 'active' : ''}`}
+                data-nav="apply"
+                onClick={() => handleNavClick('apply')}
+              >
+                Apply for a card
+              </button>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'tracking' ? 'active' : ''}`}
+                data-nav="tracking"
+                onClick={() => handleNavClick('tracking')}
+              >
+                Track application
+              </button>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'merchant' ? 'active' : ''}`}
+                data-nav="merchant"
+                onClick={() => handleNavClick('merchant')}
+              >
+                Merchant Portal
+              </button>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'profile' ? 'active' : ''}`}
+                data-nav="profile"
+                onClick={() => handleNavClick('profile')}
+              >
+                Profile
+              </button>
+              <button
+                type="button"
+                className={`side-link ${activePanel === 'support' ? 'active' : ''}`}
+                data-nav="support"
+                onClick={() => handleNavClick('support')}
+              >
+                Help &amp; support
+              </button>
+            </>
+          )}
         </nav>
         <button type="button" className="side-link logout" id="btnLogout" onClick={handleLogout}>
           Log out
@@ -205,12 +243,12 @@ export const AppShell: React.FC = () => {
 
         {/* MAIN PANEL CONTENT */}
         <main className="app-main">
+          {activePanel === 'admin' && <AdminDashboard />}
           {activePanel === 'dashboard' && <DashboardPanel />}
           {activePanel === 'merchant' && <MerchantDashboard />}
           {activePanel === 'apply' && <ApplyPanel />}
           {activePanel === 'confirmation' && <ConfirmationPanel />}
           {activePanel === 'tracking' && <TrackingPanel />}
-
           {activePanel === 'profile' && <ProfilePanel />}
           {activePanel === 'support' && <SupportPanel />}
         </main>

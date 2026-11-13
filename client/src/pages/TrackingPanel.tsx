@@ -1,10 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { applicationApi } from '../services/api';
 
 export const TrackingPanel: React.FC = () => {
   const { application, setApplication, addNotification, showToast } = useAuthStore();
   const [advancing, setAdvancing] = useState(false);
+
+  // Poll for application updates every 30 seconds
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCurrent = async () => {
+      try {
+        const updated = await applicationApi.getCurrent();
+        if (isMounted && updated) setApplication(updated);
+      } catch (err) {
+        console.error('Failed to fetch current application', err);
+      }
+    };
+    // Initial fetch
+    fetchCurrent();
+    const intervalId = setInterval(fetchCurrent, 30000);
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const stageLabels = [
     'Application submitted',

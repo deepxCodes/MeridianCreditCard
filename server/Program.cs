@@ -91,16 +91,24 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:3000",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:5174"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
+
 
 // 6. Add Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -159,12 +167,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCors("AllowFrontend");
-// IP whitelist middleware for admin routes
+// IP whitelist middleware — blocks non-whitelisted IPs from /api/admin routes
 app.UseMiddleware<IpWhitelistMiddleware>();
-// Dev Auth Bypass Middleware
-app.UseMiddleware<DevAuthBypassMiddleware>();
-
 app.UseAuthentication();
+// Dev Auth Bypass runs after real JWT authentication so it only injects an identity
+// when no valid JWT was present. It does nothing in non-Development environments.
+app.UseMiddleware<DevAuthBypassMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

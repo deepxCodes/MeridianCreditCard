@@ -50,3 +50,17 @@ public class ResetPasswordRequest
     [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters.")]
     public string NewPassword { get; set; } = string.Empty;
 }
+
+public class RegisterMerchantRequest
+{
+    [Required]
+    [StringLength(200, MinimumLength = 2, ErrorMessage = "Business name must be at least 2 characters.")]
+    public string BusinessName { get; set; } = string.Empty;
+
+    [Required]
+    public string BusinessCategory { get; set; } = string.Empty;
+
+    public string? BusinessAddress { get; set; }
+    public string? GSTNumber { get; set; }
+    public string? Website { get; set; }
+}

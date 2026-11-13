@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ShieldAlert, Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { authApi } from '../services/api';
-import type { User } from '../types';
 
 export const AdminLoginPage: React.FC = () => {
   const { setAuth, showToast } = useAuthStore();
@@ -37,27 +36,6 @@ export const AdminLoginPage: React.FC = () => {
       showToast('Admin session established');
       window.location.href = '/admin';
     } catch {
-      // Demo admin fallback for testing
-      const input = email.trim().toLowerCase();
-      if (
-        (input === 'deepg' || input === 'deepg@meridiancredit.com' || input === 'admin@meridiancredit.com' || input === 'admin') &&
-        (password === 'Deep@Admin23' || password === 'Admin@123')
-      ) {
-        const adminUser: User = {
-          id: 999,
-          fullName: 'DeepG (Administrator)',
-          email: 'deepg@meridiancredit.com',
-          username: 'deepg',
-          role: 'Admin',
-          isEmailVerified: true,
-          lastLoginAt: new Date().toISOString(),
-        };
-        setAuth(adminUser, 'admin-jwt-token');
-        showToast('Admin session established');
-        setLoading(false);
-        window.location.href = '/admin';
-        return;
-      }
       setLoading(false);
       setError('Invalid credentials or insufficient privileges.');
     }
@@ -76,9 +54,7 @@ export const AdminLoginPage: React.FC = () => {
       <div className="admin-login-container">
         {/* Header branding */}
         <div className="admin-login-header">
-          <div className="admin-shield-icon">
-            <ShieldAlert size={28} />
-          </div>
+          <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className="admin-login-logo" />
           <h1 className="admin-login-brand">Meridian Credit</h1>
           <p className="admin-login-label">Administration Console</p>
         </div>

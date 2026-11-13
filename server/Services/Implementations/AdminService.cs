@@ -4,6 +4,7 @@ using MeridianCredit.API.Enums;
 using MeridianCredit.API.Models.DTOs.Responses;
 using MeridianCredit.API.Models.Entities;
 using MeridianCredit.API.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace MeridianCredit.API.Services.Implementations;
 
@@ -170,6 +171,48 @@ public class AdminService : IAdminService
         }
 
         app.LastStageUpdatedAt = DateTime.UtcNow;
+
+        // Create a notification for the customer so polling picks it up immediately
+        var stageNames = new[]
+        {
+            "Application submitted",
+            "Documents verified",
+            "Credit assessment",
+            "Application review",
+            "Decision",
+            "Card issued"
+        };
+
+        string notifTitle;
+        string notifMsg;
+
+        if (isRejected.HasValue && isRejected.Value)
+        {
+            notifTitle = "Application update: Not Approved";
+            notifMsg = $"Your application {app.ApplicationReference} was not approved. Reason: {reason ?? "Credit threshold not met"}.";
+        }
+        else if (stage == 6)
+        {
+            notifTitle = "Application update: Card Issued";
+            notifMsg = $"Congratulations! Your application {app.ApplicationReference} has been approved and your card is being issued.";
+        }
+        else
+        {
+            var label = (stage >= 1 && stage <= stageNames.Length) ? stageNames[stage - 1] : "In Progress";
+            notifTitle = $"Application update: {label}";
+            notifMsg = $"Your application {app.ApplicationReference} has moved to stage {stage}: {label}.";
+        }
+
+        var customerNotif = new Notification
+        {
+            UserId = app.UserId,
+            Title = notifTitle,
+            Message = notifMsg,
+            NotificationType = NotificationType.General,
+            IsRead = false,
+            CreatedAt = DateTime.UtcNow
+        };
+        await _dbContext.Notifications.AddAsync(customerNotif, cancellationToken);
 
         // If advanced to stage 6 (Card issued) and approved, create virtual card if not present
         if (app.CurrentStage == 6 && !app.IsRejected && app.IssuedCardId == null)

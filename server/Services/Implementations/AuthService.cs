@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using MeridianCredit.API.Authentication;
 using MeridianCredit.API.Data.Context;
@@ -14,33 +15,67 @@ public class AuthService : IAuthService
     private readonly MeridianCreditDbContext _dbContext;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-    public AuthService(MeridianCreditDbContext dbContext, IJwtTokenGenerator jwtTokenGenerator)
+    public AuthService(
+        MeridianCreditDbContext dbContext,
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _dbContext = dbContext;
         _jwtTokenGenerator = jwtTokenGenerator;
     }
 
-    public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    public async Task<AuthResponse> RegisterAsync(
+        RegisterRequest request,
+        CancellationToken cancellationToken = default)
     {
-        if (await _dbContext.Users.AnyAsync(u => u.Email == request.Email, cancellationToken))
+        var email = request.Email?.Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(email))
         {
-            throw new InvalidOperationException("User with this email already exists.");
+            throw new InvalidOperationException("Email is required.");
         }
 
-        if (!string.IsNullOrEmpty(request.Username) && 
-            await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
+        if (await _dbContext.Users.AnyAsync(
+            u => u.Email.ToLower() == email,
+            cancellationToken))
         {
-            throw new InvalidOperationException("User with this username already exists.");
+            throw new InvalidOperationException(
+                "User with this email already exists.");
         }
 
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        // Admin accounts must be created through the admin seeding process.
+        if (request.Role == UserRole.Admin)
+        {
+            throw new UnauthorizedAccessException(
+                "Admin registration is not permitted.");
+        }
+
+        var username = string.IsNullOrWhiteSpace(request.Username)
+            ? email.Split('@')[0]
+            : request.Username.Trim();
+
+        var baseUsername = username;
+        var suffix = 1;
+
+        while (await _dbContext.Users.AnyAsync(
+            u => u.Username != null &&
+                 u.Username.ToLower() == username.ToLower(),
+            cancellationToken))
+        {
+            if (!string.IsNullOrWhiteSpace(request.Username))
+            {
+                throw new InvalidOperationException(
+                    "User with this username already exists.");
+            }
+
+            username = $"{baseUsername}{suffix++}";
+        }
 
         var user = new User
         {
-            FullName = request.FullName,
-            Email = request.Email,
-            Username = string.IsNullOrWhiteSpace(request.Username) ? request.Email.Split('@')[0] : request.Username.Trim(),
-            PasswordHash = passwordHash,
+            FullName = request.FullName.Trim(),
+            Email = email,
+            Username = username,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             PhoneNumber = request.PhoneNumber,
             DateOfBirth = request.DateOfBirth,
             Gender = request.Gender,
@@ -50,14 +85,16 @@ public class AuthService : IAuthService
             ZipCode = request.ZipCode,
             Role = request.Role,
             IsEmailVerified = true,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         if (request.Role == UserRole.Merchant)
         {
             user.MerchantProfile = new MerchantProfile
             {
-                BusinessName = request.BusinessName ?? $"{request.FullName}'s Store",
+                BusinessName = request.BusinessName ??
+                    $"{request.FullName}'s Store",
                 BusinessCategory = request.BusinessCategory ?? "Retail",
                 BusinessAddress = request.BusinessAddress,
                 GSTNumber = request.GSTNumber,
@@ -67,7 +104,7 @@ public class AuthService : IAuthService
 
         await _dbContext.Users.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
-
+        
         var welcomeNotif = new Notification
         {
             UserId = user.Id,
@@ -77,81 +114,146 @@ public class AuthService : IAuthService
             IsRead = false,
             CreatedAt = DateTime.UtcNow
         };
-        await _dbContext.Notifications.AddAsync(welcomeNotif, cancellationToken);
+
+        await _dbContext.Notifications.AddAsync(
+            welcomeNotif,
+            cancellationToken);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return await GenerateAuthResponse(user, cancellationToken);
     }
 
-    public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+    public async Task<AuthResponse> LoginAsync(
+        LoginRequest request,
+        CancellationToken cancellationToken = default)
     {
         var identifier = !string.IsNullOrWhiteSpace(request.EmailOrUsername)
             ? request.EmailOrUsername.Trim()
             : request.Email?.Trim() ?? string.Empty;
 
+        if (string.IsNullOrWhiteSpace(identifier) ||
+            string.IsNullOrWhiteSpace(request.Password))
+        {
+            throw new UnauthorizedAccessException(
+                "Username/email and password are required.");
+        }
+
+        var normalizedIdentifier = identifier.ToLowerInvariant();
+
         var user = await _dbContext.Users
             .Include(u => u.MerchantProfile)
-            .FirstOrDefaultAsync(u => u.Email == identifier || u.Username == identifier, cancellationToken);
+            .FirstOrDefaultAsync(
+                u => u.Email.ToLower() == normalizedIdentifier ||
+                     (u.Username != null &&
+                      u.Username.ToLower() == normalizedIdentifier),
+                cancellationToken);
 
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        if (user == null ||
+            string.IsNullOrWhiteSpace(user.PasswordHash) ||
+            !BCrypt.Net.BCrypt.Verify(
+                request.Password,
+                user.PasswordHash))
         {
-            throw new UnauthorizedAccessException("Incorrect username/email or password.");
+            throw new UnauthorizedAccessException(
+                "Incorrect username/email or password.");
         }
 
         user.LastLoginAt = DateTime.UtcNow;
+        user.UpdatedAt = DateTime.UtcNow;
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return await GenerateAuthResponse(user, cancellationToken);
     }
 
-    public async Task<AuthResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public async Task<AuthResponse> RefreshTokenAsync(
+        string refreshToken,
+        CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            throw new UnauthorizedAccessException(
+                "Refresh token is required.");
+        }
+
         var tokenRecord = await _dbContext.RefreshTokens
             .Include(r => r.User)
             .ThenInclude(u => u.MerchantProfile)
-            .FirstOrDefaultAsync(r => r.Token == refreshToken, cancellationToken);
+            .FirstOrDefaultAsync(
+                r => r.Token == refreshToken,
+                cancellationToken);
 
-        if (tokenRecord == null || tokenRecord.IsRevoked || tokenRecord.ExpiresAt <= DateTime.UtcNow)
+        if (tokenRecord == null ||
+            tokenRecord.IsRevoked ||
+            tokenRecord.ExpiresAt <= DateTime.UtcNow)
         {
-            throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+            throw new UnauthorizedAccessException(
+                "Invalid or expired refresh token.");
         }
 
         tokenRecord.IsRevoked = true;
         tokenRecord.RevokedAt = DateTime.UtcNow;
 
-        var authResponse = await GenerateAuthResponse(tokenRecord.User, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return authResponse;
+        // GenerateAuthResponse saves the new refresh token
+        // together with the old token's revoked status.
+        return await GenerateAuthResponse(
+            tokenRecord.User,
+            cancellationToken);
     }
 
-    public async Task RevokeRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public async Task RevokeRefreshTokenAsync(
+        string refreshToken,
+        CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return;
+        }
+
         var tokenRecord = await _dbContext.RefreshTokens
-            .FirstOrDefaultAsync(r => r.Token == refreshToken, cancellationToken);
+            .FirstOrDefaultAsync(
+                r => r.Token == refreshToken,
+                cancellationToken);
 
         if (tokenRecord != null && !tokenRecord.IsRevoked)
         {
             tokenRecord.IsRevoked = true;
             tokenRecord.RevokedAt = DateTime.UtcNow;
+
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 
-    public async Task<bool> SendForgotPasswordOtpAsync(ForgotPasswordRequest request, CancellationToken cancellationToken = default)
+    public async Task<bool> SendForgotPasswordOtpAsync(
+        ForgotPasswordRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var contact = request.Contact.Trim();
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == contact || u.PhoneNumber == contact || u.Username == contact, cancellationToken);
+        var contact = request.Contact?.Trim();
+
+        if (string.IsNullOrWhiteSpace(contact))
+        {
+            return true;
+        }
+
+        var normalizedContact = contact.ToLowerInvariant();
+
+        var user = await _dbContext.Users.FirstOrDefaultAsync(
+            u => (u.Email != null && u.Email.ToLower() == normalizedContact) ||
+                 (u.Username != null && u.Username.ToLower() == normalizedContact) ||
+                 u.PhoneNumber == contact,
+            cancellationToken);
+
         if (user == null)
         {
-            // For security, return true even if user doesn't exist
+            // Do not reveal whether an account exists.
             return true;
         }
 
         var otp = new OTP
         {
             UserId = user.Id,
-            OtpCode = "123456", // Demo fixed OTP matching UI specification
+            OtpCode = "123456",
             OtpType = OTPPurpose.PasswordReset,
             ExpiresAt = DateTime.UtcNow.AddMinutes(15),
             IsUsed = false,
@@ -160,34 +262,67 @@ public class AuthService : IAuthService
 
         await _dbContext.OTPs.AddAsync(otp, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
         return true;
     }
 
-    public async Task<bool> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
+    public async Task<bool> ResetPasswordAsync(
+        ResetPasswordRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var contact = request.Contact.Trim();
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == contact || u.PhoneNumber == contact || u.Username == contact, cancellationToken);
+        var contact = request.Contact?.Trim();
+
+        if (string.IsNullOrWhiteSpace(contact) ||
+            string.IsNullOrWhiteSpace(request.Otp) ||
+            string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            throw new InvalidOperationException(
+                "All required fields must be provided.");
+        }
+
+        var normalizedContact = contact.ToLowerInvariant();
+
+        var user = await _dbContext.Users.FirstOrDefaultAsync(
+            u => (u.Email != null && u.Email.ToLower() == normalizedContact) ||
+                 (u.Username != null && u.Username.ToLower() == normalizedContact) ||
+                 u.PhoneNumber == contact,
+            cancellationToken);
+
         if (user == null)
         {
             throw new InvalidOperationException("Account not found.");
         }
 
-        if (request.Otp != "123456")
+        var validOtp = await _dbContext.OTPs
+            .FirstOrDefaultAsync(
+                o => o.UserId == user.Id &&
+                     o.OtpCode == request.Otp &&
+                     o.OtpType == OTPPurpose.PasswordReset &&
+                     !o.IsUsed &&
+                     o.ExpiresAt > DateTime.UtcNow,
+                cancellationToken);
+
+        if (validOtp == null)
         {
-            var validOtp = await _dbContext.OTPs.FirstOrDefaultAsync(o => o.UserId == user.Id && o.OtpCode == request.Otp && !o.IsUsed && o.ExpiresAt > DateTime.UtcNow, cancellationToken);
-            if (validOtp == null)
-            {
-                throw new InvalidOperationException("Invalid or expired verification code.");
-            }
-            validOtp.IsUsed = true;
+            throw new InvalidOperationException(
+                "Invalid or expired verification code.");
         }
 
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        validOtp.IsUsed = true;
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(
+            request.NewPassword);
+
+        user.UpdatedAt = DateTime.UtcNow;
+
         await _dbContext.SaveChangesAsync(cancellationToken);
+
         return true;
     }
 
-    private async Task<AuthResponse> GenerateAuthResponse(User user, CancellationToken cancellationToken)
+    private async Task<AuthResponse> GenerateAuthResponse(
+        User user,
+        CancellationToken cancellationToken)
     {
         var accessToken = _jwtTokenGenerator.GenerateAccessToken(user);
         var refreshToken = _jwtTokenGenerator.GenerateRefreshToken();
@@ -199,7 +334,10 @@ public class AuthService : IAuthService
             ExpiresAt = DateTime.UtcNow.AddDays(7)
         };
 
-        await _dbContext.RefreshTokens.AddAsync(refreshTokenRecord, cancellationToken);
+        await _dbContext.RefreshTokens.AddAsync(
+            refreshTokenRecord,
+            cancellationToken);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new AuthResponse
@@ -207,6 +345,7 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(60),
+
             User = new UserDto
             {
                 Id = user.Id,
@@ -223,15 +362,18 @@ public class AuthService : IAuthService
                 Role = user.Role,
                 IsEmailVerified = user.IsEmailVerified,
                 LastLoginAt = user.LastLoginAt,
-                MerchantProfile = user.MerchantProfile == null ? null : new MerchantProfileDto
-                {
-                    Id = user.MerchantProfile.Id,
-                    BusinessName = user.MerchantProfile.BusinessName,
-                    BusinessCategory = user.MerchantProfile.BusinessCategory,
-                    BusinessAddress = user.MerchantProfile.BusinessAddress,
-                    GSTNumber = user.MerchantProfile.GSTNumber,
-                    Website = user.MerchantProfile.Website
-                }
+
+                MerchantProfile = user.MerchantProfile == null
+                    ? null
+                    : new MerchantProfileDto
+                    {
+                        Id = user.MerchantProfile.Id,
+                        BusinessName = user.MerchantProfile.BusinessName,
+                        BusinessCategory = user.MerchantProfile.BusinessCategory,
+                        BusinessAddress = user.MerchantProfile.BusinessAddress,
+                        GSTNumber = user.MerchantProfile.GSTNumber,
+                        Website = user.MerchantProfile.Website
+                    }
             }
         };
     }

@@ -3,7 +3,7 @@ export type CardStatus = 'Active' | 'Blocked' | 'Expired' | 'Inactive';
 export type TransactionStatus = 'Pending' | 'Approved' | 'Declined' | 'Failed' | 'Cancelled';
 export type FraudSeverity = 'Low' | 'Medium' | 'High' | 'Critical';
 
-export type NavPanel = 'dashboard' | 'merchant' | 'apply' | 'tracking' | 'profile' | 'support' | 'confirmation';
+export type NavPanel = 'dashboard' | 'merchant' | 'apply' | 'tracking' | 'profile' | 'support' | 'confirmation' | 'admin';
 
 export type AuthScreen = 'login' | 'register' | 'forgot';
 

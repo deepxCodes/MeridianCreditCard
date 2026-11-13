@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { applicationApi } from '../services/api';
-import type { CreditCardApplication } from '../types';
+
+const MAJOR_BANKS = [
+  'State Bank of India (SBI)',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Axis Bank',
+  'Kotak Mahindra Bank',
+  'Punjab National Bank (PNB)',
+  'Bank of Baroda',
+  'Canara Bank',
+  'Union Bank of India',
+  'IndusInd Bank',
+  'IDFC FIRST Bank',
+  'Yes Bank',
+  'Federal Bank',
+  'Bank of India',
+  'Central Bank of India',
+  'Indian Bank',
+  'Other / Overseas Bank',
+];
 
 export const ApplyPanel: React.FC = () => {
   const { user, application, setApplication, addNotification, showToast, setActivePanel } = useAuthStore();
@@ -33,6 +52,8 @@ export const ApplyPanel: React.FC = () => {
   const [cards, setCards] = useState('None');
   const [obligations, setObligations] = useState('');
   const [expenses, setExpenses] = useState('');
+  const [selectedBank, setSelectedBank] = useState<string>('State Bank of India (SBI)');
+  const [customBankName, setCustomBankName] = useState<string>('');
   const [bank, setBank] = useState('');
 
   // Step 4: Card Choice
@@ -105,6 +126,12 @@ export const ApplyPanel: React.FC = () => {
   const validateStep3 = () => {
     const errs: Record<string, string> = {};
     if (!income || Number(income) <= 0) errs.income = 'Enter a valid annual income.';
+    if (selectedBank === 'Other / Overseas Bank' && !customBankName.trim()) {
+      errs.bankName = 'Please specify your bank name.';
+    }
+    if (bank.trim() && (bank.trim().length !== 4 || !/^\d{4}$/.test(bank.trim()))) {
+      errs.bank = 'Please enter exactly 4 digits.';
+    }
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -196,7 +223,14 @@ export const ApplyPanel: React.FC = () => {
 
     setSubmitting(true);
     const id = 'MC-' + Math.floor(100000 + Math.random() * 899999);
-    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+    const effectiveBankName = selectedBank === 'Other / Overseas Bank' && customBankName.trim()
+      ? customBankName.trim()
+      : selectedBank;
+
+    const formattedBankInfo = bank.trim()
+      ? `${effectiveBankName} (•••• ${bank.trim()})`
+      : effectiveBankName;
 
     const payload = {
       fullName: fullName.trim(),
@@ -219,7 +253,7 @@ export const ApplyPanel: React.FC = () => {
       existingCards: cards,
       monthlyObligations: obligations ? Number(obligations) : undefined,
       estimatedExpenses: expenses ? Number(expenses) : undefined,
-      primaryBankAccountLast4: bank.trim() || undefined,
+      primaryBankAccountLast4: formattedBankInfo || undefined,
       selectedCardType: cardChoice,
       identityDocName: uploads.identity,
       addressDocName: uploads.address,
@@ -534,18 +568,52 @@ export const ApplyPanel: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="field">
-              <label htmlFor="a-bank">Primary bank account (last 4 digits)</label>
-              <input
-                type="text"
-                id="a-bank"
-                maxLength={4}
-                placeholder="1234"
-                value={bank}
-                onChange={(e) => setBank(e.target.value)}
-              />
-              <p className="hint-msg">Only used to link disbursals — full account details are never requested here.</p>
+            <div className="field-grid two">
+              <div className="field">
+                <label htmlFor="a-bank-name">
+                  Primary bank <span className="req">*</span>
+                </label>
+                <select
+                  id="a-bank-name"
+                  value={selectedBank}
+                  onChange={(e) => setSelectedBank(e.target.value)}
+                >
+                  {MAJOR_BANKS.map((b) => (
+                    <option key={b} value={b}>{b}</option>
+                  ))}
+                </select>
+                <p className={`error-msg ${errors.bankName ? 'show' : ''}`}>{errors.bankName}</p>
+              </div>
+              <div className="field">
+                <label htmlFor="a-bank">Account number (last 4 digits)</label>
+                <input
+                  type="text"
+                  id="a-bank"
+                  maxLength={4}
+                  placeholder="e.g. 1234"
+                  value={bank}
+                  onChange={(e) => setBank(e.target.value.replace(/\D/g, ''))}
+                  className={errors.bank ? 'invalid' : bank ? 'valid' : ''}
+                />
+                <p className={`error-msg ${errors.bank ? 'show' : ''}`}>{errors.bank}</p>
+              </div>
             </div>
+            {selectedBank === 'Other / Overseas Bank' && (
+              <div className="field">
+                <label htmlFor="a-custom-bank">
+                  Specify bank name <span className="req">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="a-custom-bank"
+                  placeholder="Enter your bank's name"
+                  value={customBankName}
+                  onChange={(e) => setCustomBankName(e.target.value)}
+                  className={errors.bankName ? 'invalid' : customBankName ? 'valid' : ''}
+                />
+              </div>
+            )}
+            <p className="hint-msg">Select your existing salary or savings bank. Only used to link disbursals and statement verification — full account details are never requested here.</p>
           </fieldset>
         )}
 
@@ -903,6 +971,15 @@ export const ApplyPanel: React.FC = () => {
                   <div className="review-row">
                     <span>Monthly obligations</span>
                     <span>{obligations ? `₹${Number(obligations).toLocaleString()}` : '—'}</span>
+                  </div>
+                  <div className="review-row">
+                    <span>Primary bank</span>
+                    <span>
+                      {selectedBank === 'Other / Overseas Bank' && customBankName.trim()
+                        ? customBankName.trim()
+                        : selectedBank}
+                      {bank.trim() ? ` (•••• ${bank.trim()})` : ''}
+                    </span>
                   </div>
                 </div>
               </div>

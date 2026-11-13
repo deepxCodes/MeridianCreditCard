@@ -177,13 +177,22 @@ button {
   margin-bottom: 8px;
 }
 
-.brand-mark {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, var(--accent), var(--navy));
+.brand-mark,
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
   display: inline-block;
   flex: none;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brand-mark {
+  background-image: url('/Meridiancredit.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .brand-name {
@@ -1739,6 +1748,16 @@ button {
   margin-bottom: 4px;
 }
 
+.admin-login-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 24px rgba(47,111,237,0.35);
+  margin-bottom: 6px;
+  background: #ffffff;
+}
+
 .admin-login-brand {
   font-family: var(--font-display);
   font-size: 26px;
@@ -1988,6 +2007,16 @@ button {
 .admin-brand-icon {
   color: var(--accent);
   flex-shrink: 0;
+}
+
+.admin-brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
 }
 
 .admin-brand-text {
@@ -2943,3 +2972,86 @@ button {
   font-size: 14px;
 }
 
+/* ─── Merchant Registration Gate ────────────────────────────────────────── */
+.merchant-gate-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px;
+  min-height: 70vh;
+}
+
+.merchant-gate-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.merchant-gate-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.merchant-gate-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt, #7c3aed));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.merchant-gate-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0 0 6px;
+}
+
+.merchant-gate-subtitle {
+  font-size: 14px;
+  color: var(--slate);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.merchant-gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.required-star {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .merchant-gate-card {
+    padding: 24px 18px;
+  }
+  .merchant-gate-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

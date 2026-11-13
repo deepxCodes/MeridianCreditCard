@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
-import { authApi } from '../services/api';
-import type { User } from '../types';
+import { authApi, applicationApi } from '../services/api';
 
 export const AuthShell: React.FC = () => {
-  const { authScreen, setAuthScreen, setAuth, showToast } = useAuthStore();
+  const { authScreen, setAuthScreen, setAuth, setApplication, showToast } = useAuthStore();
 
   // Login form state
   const [loginId, setLoginId] = useState('');
@@ -108,52 +107,27 @@ export const AuthShell: React.FC = () => {
     setLoginLoading(true);
     try {
       const res = await authApi.login(loginId.trim(), loginPassword);
-      setLoginLoading(false);
-      showToast('Logged in successfully');
       setAuth(res.user, res.accessToken);
-    } catch {
-      // Local fallback account simulation for demo
-      const savedUserStr = localStorage.getItem('demo_account');
-      if (savedUserStr) {
-        const demoUser = JSON.parse(savedUserStr);
-        if (
-          (loginId.trim().toLowerCase() === demoUser.email?.toLowerCase() ||
-           loginId.trim().toLowerCase() === demoUser.username?.toLowerCase()) &&
-          loginPassword === demoUser.password
-        ) {
-          setLoginLoading(false);
-          showToast('Logged in successfully');
-          setAuth(demoUser, 'demo-jwt-token');
-          return;
-        }
-      }
+      showToast('Logged in successfully');
 
-      // Default demo login check
-      if (loginId.trim() === 'jane.doe@email.com' && loginPassword === 'Password@123') {
-        const mockUser: User = {
-          id: 1,
-          fullName: 'Jane Doe',
-          email: 'jane.doe@email.com',
-          username: 'janedoe',
-          dateOfBirth: '1995-06-15',
-          gender: 'Female',
-          phoneNumber: '9876543210',
-          address: '42 Park Avenue',
-          city: 'Mumbai',
-          state: 'Maharashtra',
-          zipCode: '400001',
-          role: 'Customer',
-          isEmailVerified: true,
-          lastLoginAt: new Date().toISOString(),
-        };
-        setLoginLoading(false);
-        showToast('Logged in successfully');
-        setAuth(mockUser, 'demo-jwt-token');
-        return;
+      try {
+        const app = await applicationApi.getCurrent();
+        if (app) setApplication(app);
+      } catch {
+        // AppShell can retry loading the application after login.
       }
+    } catch (error: any) {
+      const status = error?.response?.status;
 
+      if (!error?.response) {
+        setLoginError('Cannot connect to the server. Check that the backend is running and try again.');
+      } else if (status === 401) {
+        setLoginError('Incorrect username/email or password. Please try again.');
+      } else {
+        setLoginError(error?.response?.data?.message || 'Login failed. Please try again.');
+      }
+    } finally {
       setLoginLoading(false);
-      setLoginError('Incorrect username/email or password.');
     }
   };
 
@@ -238,19 +212,29 @@ export const AuthShell: React.FC = () => {
       setRegLoading(true);
       try {
         await authApi.register(payload);
-      } catch {
-        // Fallback store demo account in localStorage
-        const demoAcct = { ...payload, isEmailVerified: true };
-        localStorage.setItem('demo_account', JSON.stringify(demoAcct));
-      }
 
-      setRegLoading(false);
-      setRegSuccessBanner('Account created successfully. Redirecting to login…');
-      showToast('Account created — please log in');
-      setTimeout(() => {
-        setLoginId(username.trim() || email.trim());
-        setAuthScreen('login');
-      }, 900);
+        setRegSuccessBanner('Account created successfully. Redirecting to login…');
+        showToast('Account created — please log in');
+
+        window.setTimeout(() => {
+          setLoginId(username.trim() || email.trim());
+          setAuthScreen('login');
+        }, 900);
+      } catch (error: any) {
+        const message =
+          error?.response?.data?.message ||
+          (error?.response?.status === 409
+            ? 'An account with this email or username already exists.'
+            : !error?.response
+              ? 'Cannot connect to the server. Your account was not created.'
+              : 'Registration failed. Please check your details and try again.');
+
+        setRegSuccessBanner(null);
+        setRegErrors((current) => ({ ...current, submit: message }));
+        showToast(message);
+      } finally {
+        setRegLoading(false);
+      }
     }
   };
 
@@ -286,12 +270,19 @@ export const AuthShell: React.FC = () => {
     setForgotLoading(true);
     try {
       await authApi.sendForgotPasswordOtp(forgotContact.trim());
-    } catch {
-      // ignore
+      setForgotStep(2);
+      showToast('Verification code sent (demo code: 123456)');
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        (!error?.response
+          ? 'Cannot connect to the server. Please try again.'
+          : 'Could not send the verification code. Please try again.');
+
+      setForgotErrors({ forgotContact: message });
+    } finally {
+      setForgotLoading(false);
     }
-    setForgotLoading(false);
-    setForgotStep(2);
-    showToast('Verification code sent (demo code: 123456)');
   };
 
   const handleForgotVerifyOtp = () => {
@@ -318,19 +309,25 @@ export const AuthShell: React.FC = () => {
     setForgotLoading(true);
     try {
       await authApi.resetPassword(forgotContact.trim(), forgotOtp.trim(), newPassword);
-    } catch {
-      // update local demo account if exists
-      const savedUserStr = localStorage.getItem('demo_account');
-      if (savedUserStr) {
-        const demoUser = JSON.parse(savedUserStr);
-        demoUser.password = newPassword;
-        localStorage.setItem('demo_account', JSON.stringify(demoUser));
-      }
+
+      showToast('Password updated. Please log in.');
+      setLoginId(forgotContact.trim());
+      setAuthScreen('login');
+      setForgotStep(1);
+      setForgotOtp('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        (!error?.response
+          ? 'Cannot connect to the server. Your password was not changed.'
+          : 'Password reset failed. Check the verification code and try again.');
+
+      setForgotErrors({ newPassword: message });
+    } finally {
+      setForgotLoading(false);
     }
-    setForgotLoading(false);
-    showToast('Password updated. Please log in.');
-    setLoginId(forgotContact.trim());
-    setAuthScreen('login');
   };
 
   /* ================== RENDER SCREEN ================== */
@@ -341,7 +338,7 @@ export const AuthShell: React.FC = () => {
         <section id="screen-login" className="screen auth-shell active">
           <div className="auth-side">
             <div className="brand">
-              <span className="brand-mark" aria-hidden="true"></span>
+              <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className="brand-logo" />
               <span className="brand-name">Meridian Credit</span>
             </div>
             <h1 className="auth-hero-title">Credit, structured clearly.</h1>
@@ -491,7 +488,7 @@ export const AuthShell: React.FC = () => {
         <section id="screen-register" className="screen auth-shell active">
           <div className="auth-side">
             <div className="brand">
-              <span className="brand-mark" aria-hidden="true"></span>
+              <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className="brand-logo" />
               <span className="brand-name">Meridian Credit</span>
             </div>
             <h1 className="auth-hero-title">Open your account in three short steps.</h1>
@@ -817,6 +814,11 @@ export const AuthShell: React.FC = () => {
                   {regSuccessBanner}
                 </div>
               )}
+              {regErrors.submit && (
+                <div className="banner banner-error" role="alert">
+                  {regErrors.submit}
+                </div>
+              )}
 
               <div className="form-nav">
                 {regStep > 1 && (
@@ -855,7 +857,7 @@ export const AuthShell: React.FC = () => {
         <section id="screen-forgot" className="screen auth-shell active">
           <div className="auth-side">
             <div className="brand">
-              <span className="brand-mark" aria-hidden="true"></span>
+              <img src="/Meridiancredit.jpg" alt="Meridian Credit Logo" className="brand-logo" />
               <span className="brand-name">Meridian Credit</span>
             </div>
             <h1 className="auth-hero-title">Reset your password securely.</h1>

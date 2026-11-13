@@ -1,0 +1,714 @@
+/* ═══════════════════════════════════════════════════════════════════
+   MerchantDashboard.css  —  Light Theme + Premium Registration Page
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── CSS Variables — Light Theme ───────────────────────────────── */
+:root {
+  --md-primary:        #4f46e5;   /* indigo-600   */
+  --md-primary-light:  #ede9fe;   /* indigo-100   */
+  --md-primary-dark:   #3730a3;   /* indigo-800   */
+  --md-primary-glow:   rgba(79, 70, 229, 0.18);
+  --md-secondary:      #7c3aed;   /* violet-600   */
+  --md-accent:         #0ea5e9;   /* sky-500      */
+
+  --md-emerald:        #059669;
+  --md-emerald-light:  #d1fae5;
+  --md-red:            #dc2626;
+  --md-red-light:      #fee2e2;
+  --md-amber:          #d97706;
+  --md-amber-light:    #fef3c7;
+
+  /* Light theme surfaces */
+  --md-bg:             #f1f5f9;   /* slate-100    */
+  --md-surface:        #ffffff;
+  --md-surface-2:      #f8fafc;   /* slate-50     */
+  --md-border:         #e2e8f0;   /* slate-200    */
+  --md-border-focus:   #a5b4fc;   /* indigo-300   */
+  --md-shadow-sm:      0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --md-shadow:         0 4px 16px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --md-shadow-lg:      0 10px 40px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --md-shadow-hover:   0 8px 28px rgba(79, 70, 229, 0.14), 0 2px 8px rgba(79, 70, 229, 0.08);
+
+  /* Typography */
+  --md-text:           #0f172a;   /* slate-900    */
+  --md-text-secondary: #475569;   /* slate-600    */
+  --md-text-muted:     #94a3b8;   /* slate-400    */
+  --md-radius:         14px;
+  --md-radius-sm:      8px;
+  --md-radius-xs:      6px;
+  --md-transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MERCHANT REGISTRATION GATE — Full Premium Design
+   ═══════════════════════════════════════════════════════════════════ */
+
+.merchant-gate-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0fdf4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  animation: gate-fade-in 0.5s ease both;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background orbs */
+.merchant-gate-wrapper::before,
+.merchant-gate-wrapper::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.45;
+}
+
+.merchant-gate-wrapper::before {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+  top: -120px;
+  right: -100px;
+}
+
+.merchant-gate-wrapper::after {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+  bottom: -80px;
+  left: -80px;
+}
+
+@keyframes gate-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* The card itself */
+.merchant-gate-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-radius: 20px;
+  box-shadow: var(--md-shadow-lg);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Coloured top banner inside the card */
+.merchant-gate-card::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background: linear-gradient(90deg, var(--md-primary) 0%, var(--md-secondary) 50%, var(--md-accent) 100%);
+}
+
+/* Header section */
+.merchant-gate-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 32px 36px 24px;
+  border-bottom: 1px solid var(--md-border);
+  background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 100%);
+}
+
+.merchant-gate-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px var(--md-primary-glow);
+}
+
+.merchant-gate-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--md-text);
+  margin: 0 0 5px;
+  letter-spacing: -0.3px;
+}
+
+.merchant-gate-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--md-text-secondary);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* Form body */
+.merchant-gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 36px 36px;
+}
+
+@media (max-width: 600px) {
+  .merchant-gate-header,
+  .merchant-gate-form {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .merchant-gate-title {
+    font-size: 18px;
+  }
+}
+
+/* Form groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.required-star {
+  color: var(--md-red);
+}
+
+.form-control {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--md-text);
+  background: var(--md-surface-2);
+  border: 1.5px solid var(--md-border);
+  border-radius: var(--md-radius-sm);
+  padding: 11px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color var(--md-transition), box-shadow var(--md-transition), background var(--md-transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-control::placeholder {
+  color: var(--md-text-muted);
+}
+
+.form-control:focus {
+  border-color: var(--md-primary);
+  background: var(--md-surface);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.form-control:hover:not(:focus) {
+  border-color: #cbd5e1;
+}
+
+.form-control.input-error {
+  border-color: var(--md-red);
+  background: #fff5f5;
+}
+
+.form-control.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+select.form-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.field-error {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--md-red);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Submit button */
+.btn-full {
+  width: 100%;
+  padding: 13px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--md-radius-sm);
+  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-secondary) 100%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--md-transition), transform var(--md-transition), box-shadow var(--md-transition);
+  box-shadow: 0 4px 16px var(--md-primary-glow);
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+}
+
+.btn-full:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.28);
+}
+
+.btn-full:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-full:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MERCHANT DASHBOARD — Light Theme
+   ═══════════════════════════════════════════════════════════════════ */
+
+.merchant-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: md-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes md-slide-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header Card ────────────────────────────────────────────── */
+.merchant-header-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 32px;
+  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-secondary) 60%, #6d28d9 100%);
+  border-radius: var(--md-radius);
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.merchant-header-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.merchant-header-card::after {
+  content: '';
+  position: absolute;
+  bottom: -60%;
+  left: 5%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.merchant-header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.merchant-icon-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  transition: transform var(--md-transition), background var(--md-transition);
+}
+
+.merchant-header-card:hover .merchant-icon-badge {
+  transform: rotate(-6deg) scale(1.06);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.merchant-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 5px;
+  letter-spacing: -0.3px;
+}
+
+.merchant-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  flex-wrap: wrap;
+}
+
+.merchant-tag {
+  color: #a5f3fc;
+  font-weight: 700;
+}
+
+.merchant-gst {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: #bfdbfe;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.merchant-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.merchant-header-actions .btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  backdrop-filter: blur(6px);
+  border-radius: var(--md-radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background var(--md-transition), transform var(--md-transition);
+}
+
+.merchant-header-actions .btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* ── Stats Grid ─────────────────────────────────────────────── */
+.merchant-grid-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 860px) { .merchant-grid-stats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .merchant-grid-stats { grid-template-columns: 1fr; } }
+
+/* ── Stat Card ──────────────────────────────────────────────── */
+.merchant-stat-card {
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius);
+  padding: 24px 26px 20px;
+  box-shadow: var(--md-shadow);
+  transition: transform var(--md-transition), box-shadow var(--md-transition), border-color var(--md-transition);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.merchant-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--md-radius) var(--md-radius) 0 0;
+  opacity: 0;
+  transition: opacity var(--md-transition);
+}
+
+.merchant-stat-card:nth-child(1)::before { background: linear-gradient(90deg, var(--md-primary), var(--md-secondary)); }
+.merchant-stat-card:nth-child(2)::before { background: linear-gradient(90deg, var(--md-emerald), #34d399); }
+.merchant-stat-card:nth-child(3)::before { background: linear-gradient(90deg, var(--md-red), #f87171); }
+
+.merchant-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--md-shadow-hover);
+  border-color: #c7d2fe;
+}
+
+.merchant-stat-card:hover::before {
+  opacity: 1;
+}
+
+.merchant-stat-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--md-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.merchant-stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--md-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--md-transition);
+}
+
+.merchant-stat-card:hover .merchant-stat-icon {
+  transform: scale(1.1) rotate(6deg);
+}
+
+.merchant-stat-icon.revenue {
+  background: var(--md-primary-light);
+  color: var(--md-primary);
+}
+
+.merchant-stat-icon.approved {
+  background: var(--md-emerald-light);
+  color: var(--md-emerald);
+}
+
+.merchant-stat-icon.declined {
+  background: var(--md-red-light);
+  color: var(--md-red);
+}
+
+.merchant-stat-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--md-text);
+  letter-spacing: -0.8px;
+  line-height: 1;
+  margin-bottom: 10px;
+  animation: md-count-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes md-count-in {
+  from { opacity: 0; transform: scale(0.82) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.merchant-stat-value.revenue-val {
+  font-size: 26px;
+  background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.merchant-stat-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--md-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Table Card ─────────────────────────────────────────────── */
+.merchant-table-card {
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius);
+  box-shadow: var(--md-shadow);
+  overflow: hidden;
+  transition: box-shadow var(--md-transition);
+}
+
+.merchant-table-card:hover {
+  box-shadow: var(--md-shadow-lg);
+}
+
+.merchant-table-header {
+  padding: 20px 26px 16px;
+  border-bottom: 1px solid var(--md-border);
+  background: var(--md-surface-2);
+}
+
+.merchant-table-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--md-text);
+  margin: 0 0 3px;
+}
+
+.merchant-table-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  color: var(--md-text-muted);
+  margin: 0;
+}
+
+.merchant-table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.merchant-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+}
+
+.merchant-data-table thead {
+  background: var(--md-surface-2);
+}
+
+.merchant-data-table th {
+  padding: 12px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--md-text-muted);
+  border-bottom: 1px solid var(--md-border);
+  white-space: nowrap;
+}
+
+.merchant-data-table td {
+  padding: 14px 18px;
+  color: var(--md-text);
+  border-bottom: 1px solid var(--md-border);
+  vertical-align: middle;
+}
+
+.merchant-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.merchant-data-table tbody tr {
+  transition: background var(--md-transition);
+}
+
+.merchant-data-table tbody tr:hover td {
+  background: #f8f7ff;
+}
+
+.merchant-ref {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--md-primary);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.merchant-amount {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 700;
+  color: var(--md-emerald);
+  font-size: 14px;
+}
+
+.merchant-date {
+  font-size: 12px;
+  color: var(--md-text-muted);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.merchant-empty-row {
+  text-align: center;
+  color: var(--md-text-muted);
+  padding: 52px 24px !important;
+  font-size: 14px;
+}
+
+/* ── Status Pills ────────────────────────────────────────────── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+}
+
+.status-success {
+  background: var(--md-emerald-light);
+  color: var(--md-emerald);
+  border: 1px solid #a7f3d0;
+}
+
+.status-danger {
+  background: var(--md-red-light);
+  color: var(--md-red);
+  border: 1px solid #fecaca;
+}
+
+/* ── Spinner animation for refresh button ────────────────────── */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .merchant-shell {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .merchant-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 20px;
+  }
+
+  .merchant-title { font-size: 18px; }
+  .merchant-stat-value { font-size: 28px; }
+  .merchant-stat-value.revenue-val { font-size: 22px; }
+}
