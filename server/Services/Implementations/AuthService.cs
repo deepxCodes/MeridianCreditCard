@@ -68,7 +68,6 @@ public class AuthService : IAuthService
         await _dbContext.Users.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        // Add a default welcome notification
         var welcomeNotif = new Notification
         {
             UserId = user.Id,
