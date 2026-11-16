@@ -38,5 +38,5 @@ logs/
 Thumbs.db
 
 db_credentials.json
-appsettings*.json
+appsettings.json
 server/appsettings.json
