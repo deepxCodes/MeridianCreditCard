@@ -211,3 +211,4 @@ D:\SIDE PROJECTS\Credit Card Processing System\server\obj\Debug\net10.0\Meridian
 D:\SIDE PROJECTS\Credit Card Processing System\server\obj\Debug\net10.0\MeridianCredit.API.genruntimeconfig.cache
 D:\SIDE PROJECTS\Credit Card Processing System\server\obj\Debug\net10.0\ref\MeridianCredit.API.dll
 D:\SIDE PROJECTS\Credit Card Processing System\server\obj\Debug\net10.0\MeridianCredit.API.sourcelink.json
+D:\SIDE PROJECTS\Credit Card Processing System\server\bin\Debug\net10.0\appsettings.Example.json

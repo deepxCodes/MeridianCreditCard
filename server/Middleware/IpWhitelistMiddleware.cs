@@ -22,8 +22,8 @@ namespace MeridianCredit.API.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            // Apply only to admin endpoints
-            if (_whitelist.Length > 0 && context.Request.Path.StartsWithSegments("/api/admin"))
+            // Apply only to admin endpoints (skip if whitelist is empty or contains "*")
+            if (_whitelist.Length > 0 && !_whitelist.Contains("*") && context.Request.Path.StartsWithSegments("/api/admin"))
             {
                 var remoteIpAddress = context.Connection.RemoteIpAddress;
                 var isLoopback = remoteIpAddress != null && System.Net.IPAddress.IsLoopback(remoteIpAddress);
