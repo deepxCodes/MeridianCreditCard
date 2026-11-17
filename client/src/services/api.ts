@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AuthResponse, Card, CardStatus, CreditCardApplication, DashboardStats, FraudLog, NotificationItem, ProcessPaymentRequest, ProcessPaymentResponse, Transaction, User } from '../types';
 import { useAuthStore } from '../store/useAuthStore';
 
-const API_BASE_URL = 'http://localhost:5175/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5175/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

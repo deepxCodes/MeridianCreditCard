@@ -1,24 +1,14 @@
 # Credentials & Sensitive Configs
-db_credentials.json
-server/appsettings.json
-server/appsettings.Development.json
-server/appsettings.*.json
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
 *.env
 .env
 .env.*
-!.env.example
 
 # .NET Build & Output Folders
 bin/
 obj/
-server/bin/
-server/obj/
-
-# Node & Frontend Build Outputs
-node_modules/
-client/node_modules/
-dist/
-client/dist/
 
 # Logs
 *.log
@@ -36,7 +26,3 @@ logs/
 # OS Generated Files
 .DS_Store
 Thumbs.db
-
-db_credentials.json
-appsettings.json
-server/appsettings.json
